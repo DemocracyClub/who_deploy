@@ -1,0 +1,19 @@
+---
+  - name: Install required system packages.
+    apt: pkg={{ item }} state=installed update-cache=yes
+    with_items: "{{ system_packages }}"
+
+  - name: Upgrade all packages
+    apt:
+      upgrade: safe
+      update-cache: yes
+      cache_valid_time: 43200
+
+  - name: Install required Python packages.
+    easy_install: name={{ item }}
+    with_items: "{{ python_packages }}"
+
+  - name: Install "yuglify" node.js package.
+    npm:
+      name: yuglify
+      global: yes

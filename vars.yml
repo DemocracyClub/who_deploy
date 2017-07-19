@@ -1,0 +1,52 @@
+---
+project_name: wcivf
+project_root: /var/www/wcivf
+app_name: wcivf
+project_repo: https://github.com/DemocracyClub/WhoCanIVoteFor.git
+branch: master
+domain: whocanivotefor.co.uk
+nickname: production
+cron_email: developers@democracyclub.org.uk
+postgresql_version: 9.5
+system_packages:
+  - aptitude
+  - build-essential
+  - bundler
+  - cmake
+  - curl
+  - gettext
+  - git
+  - language-pack-en
+  - libavcodec-dev
+  - libavformat-dev
+  - libevent-dev
+  - libffi-dev
+  - libgtk2.0-dev
+  - libjpeg-dev
+  - libpq-dev
+  - libssl-dev
+  - libxml2-dev
+  - libxslt-dev
+  - libyaml-dev
+  - memcached
+  - nginx
+  - npm
+  - nodejs-legacy
+  - postfix
+  - postgis
+  - python-dev
+  - python3-dev
+  - python-pip
+  - python-psycopg2
+  - python-setuptools
+  - python-virtualenv
+  - redis-server
+  - s3cmd
+  - yui-compressor
+  - unzip
+  - unattended-upgrades
+python_packages:
+  - pip
+  - virtualenv
+initfiles:
+  - gunicorn

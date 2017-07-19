@@ -1,0 +1,153 @@
+---
+- hosts: all
+  vars_files:
+    - vars.yml
+    # - @vault.yml
+  gather_facts: true
+  become: true
+  become_user: "{{ project_name }}"
+  tasks:
+  - name: Install output on error
+    template:
+      src: files/scripts/output-on-error
+      dest: /usr/local/bin/output-on-error
+      mode: 0777
+    become_user: root
+
+  - cronvar:
+      name: MAILTO
+      value: "{{ cron_email }}"
+      user: "{{ project_name }}"
+
+  - name: "Process log queue"
+    cron:
+      name: "Process log queue"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py process_log_queue"
+
+  - name: "Import wikipedia"
+    cron:
+      name: "Import wikipedia"
+      minute: "30"
+      hour: 1
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_wikipedia_bios"
+      disabled: no
+
+  - name: "Import Elections"
+    cron:
+      name: "Import Elections"
+      minute: "10"
+      hour: "*/2"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_elections"
+      disabled: no
+
+  - name: "Import Posts"
+    cron:
+      name: "Import Posts"
+      minute: "30"
+      hour: "*/2"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_posts"
+      disabled: no
+
+  - name: "Import Parties"
+    cron:
+      name: "Import Parties"
+      minute: "35"
+      hour: "*/2"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_parties"
+      disabled: no
+
+  - name: "Import People"
+    cron:
+      name: "Import People"
+      minute: "40"
+      hour: "*/2"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_people"
+      disabled: no
+
+  - name: "Import Recent People"
+    cron:
+      name: "Import Recent People"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_people --recent"
+      disabled: no
+
+  - name: "Import Companies"
+    cron:
+      name: "Import Companies"
+      hour: "2"
+      job: "curl --silent 'https://raw.githubusercontent.com/EdwardBetts/companies-house/master/companies.csv' > /tmp/companies.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_companies /tmp/companies.csv"
+      disabled: no
+
+  - name: "Import Hustings"
+    cron:
+      name: "Import Hustings"
+      hour: "3"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/1WJ2PCCmljeij1JwzS5_QO1P-INf3acT_ftWv-qZ-MwU/pub?gid=1811704083&single=true&output=csv' > /tmp/hustings.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_hustings /tmp/hustings.csv --quiet"
+      disabled: no
+
+  - name: "Import Manifestos"
+    cron:
+      name: "Import Manifestos"
+      minute: "15"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/1ag0FuUqUOJlP8nvVVxjxFh_2HDNH6WJ9srZSJh9KG_c/pub?gid=816418254&single=true&output=csv' > /tmp/manifestos.csv && /usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py import_manifestos /tmp/manifestos.csv"
+      disabled: yes
+
+  - name: "Import CVs"
+    cron:
+      name: "Import CVs"
+      hour: "*/2"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_cvs"
+      disabled: yes
+
+  - name: "Import Leaflets"
+    cron:
+      name: "Import Leaflets"
+      hour: "4"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_leaflets"
+      disabled: no
+
+  - name: "Import Nesta Backgrounds"
+    cron:
+      name: "Import Nesta Backgrounds"
+      hour: "2"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/19_o6rm6sfrkO-C4PPZXSDl2bCWjdCJ8a7lbG4vz4JbM/pub?gid=1658209649&single=true&output=csv' > /tmp/nesta.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_nesta_backgrounds /tmp/nesta.csv"
+      disabled: yes
+
+  - name: "Import Results Atom"
+    cron:
+      name: "Import Results Atom"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_results_atom"
+      disabled: yes
+
+
+# Reboot jobs
+  - name: Init data on restart
+    cron:
+      name: "Init data"
+      special_time: reboot
+      job: "sleep 30s && {{ project_root }}/load_database_from_s3.sh && /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py init_data"
+
+
+
+# Controller jobs
+  - name: Back up data to S3
+    cron:
+      name: "Back up data"
+      minute: 16
+      job: "/usr/local/bin/output-on-error ~/backup_db_to_s3.sh"
+    when: wcivf_controller is defined
+
+  - name: Batch feedback to Slack
+    cron:
+      name: "Batch feedback to Slack"
+      minute: 0
+      hour: 9
+      job: "/usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py batch_feedback_to_slack --hours=24"
+    when: wcivf_controller is defined
+
+  - name: Init full data at 20 past
+    cron:
+      name: "Init data"
+      minute: 20
+      hour: 0
+      job: "/usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py init_data --full"
+    when: wcivf_controller is defined

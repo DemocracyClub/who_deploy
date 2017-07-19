@@ -1,0 +1,33 @@
+---
+- name: restart nginx
+  service: name=nginx state=restarted
+  become_user: root
+
+- name: reload nginx
+  service: name=nginx state=restarted
+  become_user: root
+
+- name: restart web frontend systemd
+  service:
+    name: "{{ project_name }}_gunicorn"
+    state: restarted
+  become_user: root
+  listen: restart web frontend
+  when: ansible_distribution_version == "16.04"
+
+- name: restart web frontend upstart
+  service:
+    name: "{{ project_name }}_gunicorn"
+    state: restarted
+  become_user: root
+  listen: restart web frontend
+  when: ansible_distribution_version == "14.04"
+
+- name: reload systemd
+  become: yes
+  command: systemctl daemon-reload
+
+- name: restart rsyslog
+  service: name=rsyslog state=restarted
+  become: True
+  become_user: root

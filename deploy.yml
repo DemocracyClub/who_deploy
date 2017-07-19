@@ -1,0 +1,75 @@
+---
+
+
+- hosts: all
+  tasks:
+  - add_host:
+      name: "52.50.182.123"
+      groups: tag_Env_prod
+      wcivf_controller: yes
+      ansible_ssh_user: ubuntu
+      become: true
+    when: packer is undefined
+
+
+- hosts:
+   - all
+  vars_files:
+    - vars.yml
+    - vault.yml
+  become: true
+  become_user: "{{ project_name }}"
+
+  tasks:
+  - name: Pull sources from the repository.
+    git:
+      repo: "{{ project_repo }}"
+      dest: "{{ project_root }}/code/"
+      version: "{{ branch }}"
+      accept_hostkey: true
+    notify:
+      - restart web frontend
+    register: application_git_repo
+
+  - name: Upload configuration.
+    template:
+      src: "webapp_settings/{{ nickname }}.py"
+      dest: "{{ project_root }}/code/wcivf/settings/local.py"
+    notify: restart web frontend
+    register: application_config
+
+  - name: Upgrade the virtualenv.
+    pip:
+      requirements: "{{ project_root }}/code/requirements.txt"
+      virtualenv: "{{ project_root }}/env/"
+      virtualenv_python: "python3"
+    when: (application_git_repo.changed) or (application_config.changed)
+
+  - name: Migrate Django database.
+    shell: "{{ project_root }}/env/bin/python {{ project_root }}/code/manage.py migrate --noinput"
+    when: (application_git_repo.changed) or (application_config.changed)
+
+  - name: Generate Django media.
+    shell: "PATH={{ project_root }}/env/bin/:$PATH {{ project_root }}/env/bin/python {{ project_root }}/code/manage.py collectstatic --noinput"
+    when: (application_git_repo.changed) or (application_config.changed)
+
+  - django_manage:
+      command: setup_django_site
+      app_path: "{{ project_root }}/code/"
+      virtualenv: "{{ project_root }}/env/"
+
+  - name: Install rsyslog configuration files
+    template:
+      src: files/conf/rsyslog.conf
+      dest: /etc/rsyslog.conf
+    become_user: root
+    notify:
+      - restart rsyslog
+
+
+  handlers:
+    - include: handlers.yml
+      static: yes
+
+
+- include: crontab.yml

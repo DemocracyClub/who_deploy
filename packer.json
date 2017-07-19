@@ -1,0 +1,50 @@
+{
+  "description": "Builds WCIVF golden image",
+  "variables": {
+    "build_region": "eu-west-2",
+    "branch": "master",
+    "max_spot_price": "0.1"
+  },
+  "builders": [
+    {
+      "name": "server",
+      "type": "amazon-ebs",
+      "ami_name": "wcivf {{isotime |clean_ami_name }}",
+      "associate_public_ip_address": true,
+      "iam_instance_profile": "wcivf-packer-ami-builder",
+      "instance_type":"m4.xlarge",
+      "region":"{{user `build_region` }}",
+      "source_ami": "ami-036b7f67",
+      "spot_price": "{{ user `max_spot_price`}}",
+      "ssh_username": "ubuntu",
+      "tags": {
+        "build_date":"{{isotime}}"
+      },
+      "run_tags": {
+        "Name": "packer-ami-build"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "./provision.yml",
+      "groups":["production", "servers", "remote"],
+      "extra_arguments": [
+        "--extra-vars", "packer=1"
+      ]
+
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./import_all_data.yml",
+      "groups":["production", "servers", "remote"]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo rm -rf /var/log/cloud-init*.log /home/ubuntu/.ssh/authorized_keys"
+      ]
+    }
+  ]
+}
