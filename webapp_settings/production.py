@@ -52,4 +52,5 @@ CHECK_HOST_DIRTY = True
 DIRTY_FILE_PATH = "~/server_dirty"
 EE_BASE = "http://localhost:8000"
 
-# 6
+EMAIL_SIGNUP_ENDPOINT = 'https://democracyclub.org.uk/mailing_list/api_signup/v1/'
+EMAIL_SIGNUP_API_KEY = '{{ vault_email_signup_api_key }}'
