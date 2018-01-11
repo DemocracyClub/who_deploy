@@ -69,14 +69,14 @@
       name: "Import Companies"
       hour: "2"
       job: "curl --silent 'https://raw.githubusercontent.com/EdwardBetts/companies-house/master/companies.csv' > /tmp/companies.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_companies /tmp/companies.csv"
-      disabled: no
+      disabled: yes
 
   - name: "Import Hustings"
     cron:
       name: "Import Hustings"
       hour: "3"
       job: "curl --silent 'https://docs.google.com/spreadsheets/d/1WJ2PCCmljeij1JwzS5_QO1P-INf3acT_ftWv-qZ-MwU/pub?gid=1811704083&single=true&output=csv' > /tmp/hustings.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_hustings /tmp/hustings.csv --quiet"
-      disabled: no
+      disabled: yes
 
   - name: "Import Manifestos"
     cron:
