@@ -4,13 +4,12 @@
 - hosts: all
   tasks:
   - add_host:
-      name: "52.50.182.123"
+      name: "52.56.164.187"
       groups: tag_Env_prod
       wcivf_controller: yes
       ansible_ssh_user: ubuntu
       become: true
     when: packer is undefined
-
 
 - hosts:
    - all
