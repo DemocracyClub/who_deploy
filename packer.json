@@ -14,7 +14,7 @@
       "iam_instance_profile": "wcivf-packer-ami-builder",
       "instance_type":"m4.xlarge",
       "region":"{{user `build_region` }}",
-      "source_ami": "ami-d7aab2b3",
+      "source_ami": "ami-30c22657",
       "spot_price": "{{ user `max_spot_price`}}",
       "ssh_username": "ubuntu",
       "tags": {
