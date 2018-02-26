@@ -2,6 +2,8 @@ from .base import *
 
 DEBUG = False
 
+SECRET_KEY = '{{ vault_django_secret }}'
+
 ADMINS = (
     ('WCIVF Developers', 'developers@democracyclub.org.uk'),
 )
