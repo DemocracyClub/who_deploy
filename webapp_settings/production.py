@@ -49,6 +49,7 @@ GOCARDLESS_APP_ID="{{ vault_gocardless_app_id }}"
 GOCARDLESS_APP_SECRET="{{ vault_gocardless_app_secret }}"
 GOCARDLESS_ACCESS_TOKEN="{{ vault_gocardless_access_token }}"
 GOCARDLESS_MERCHANT_ID="{{ vault_gocardless_merchant_id }}"
+GOCARDLESS_ACCESS_TOKEN = "{{ vault_gocardless_access_token }}"
 
 CHECK_HOST_DIRTY = True
 DIRTY_FILE_PATH = "~/server_dirty"
