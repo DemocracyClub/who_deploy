@@ -130,3 +130,9 @@
         # Wait for this long to replace old instances
         wait_timeout: 300 # importing people can take ages
       when: not spot_price is defined
+
+
+    - name: Delete old unused on-demand Launch Configs
+      ec2_lc:
+        name: "wcivf_{{ aws_env }}-{{ old_lc_num }}"
+        state: absent
