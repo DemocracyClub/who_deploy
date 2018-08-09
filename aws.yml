@@ -4,12 +4,12 @@
     region: "{{ lookup('env', 'AWS_REGION') or 'eu-west-2' }}"
     regions:
       eu-west-2:
-        ami_id: ami-415a4125 # The Who image ID from packer
+        ami_id: ami-08e3783e8afa3d630 # The Who image ID from packer
         # The default VPC
         vpc_id: vpc-110bfc78
     vpc_id: "{{ regions[region].vpc_id }}"
     ami_id: "{{ regions[region].ami_id }}"
-    lc_num: 45
+    lc_num: 46
 
     # elb_ssl_arn: "arn:aws:iam::225244788755:server-certificate/ps-prod-5"
     # elb_ssl_arn: "arn:aws:acm:eu-west-2:929325949831:certificate/0914a080-ce61-4dd3-80cd-4f35348634c3"
