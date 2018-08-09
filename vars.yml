@@ -6,7 +6,7 @@ project_repo: https://github.com/DemocracyClub/WhoCanIVoteFor.git
 branch: master
 domain: whocanivotefor.co.uk
 nickname: production
-cron_email: developers@democracyclub.org.uk
+cron_email: developers+wcivf_%s@democracyclub.org.uk
 postgresql_version: 9.5
 system_packages:
   - aptitude

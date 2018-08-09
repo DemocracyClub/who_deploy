@@ -10,7 +10,7 @@
 
   - cronvar:
       name: MAILTO
-      value: "{{ cron_email }}"
+      value: "{{ cron_email|format(ec2_tag_Name|default('wcivf')) }}"
       user: "{{ project_name }}"
 
   - name: "Process log queue"
@@ -74,15 +74,29 @@
   - name: "Import Hustings"
     cron:
       name: "Import Hustings"
-      hour: "3"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/1WJ2PCCmljeij1JwzS5_QO1P-INf3acT_ftWv-qZ-MwU/pub?gid=1811704083&single=true&output=csv' > /tmp/hustings.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_hustings /tmp/hustings.csv --quiet"
+      minute: "*/5"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=0&single=true&output=csv' > /tmp/hustings.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_hustings /tmp/hustings.csv --quiet"
       disabled: yes
 
   - name: "Import Manifestos"
     cron:
       name: "Import Manifestos"
       minute: "15"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/1ag0FuUqUOJlP8nvVVxjxFh_2HDNH6WJ9srZSJh9KG_c/pub?gid=816418254&single=true&output=csv' > /tmp/manifestos.csv && /usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py import_manifestos /tmp/manifestos.csv"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/manifestos.csv && /usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py import_manifestos /tmp/manifestos.csv"
+      disabled: yes
+
+  - name: "Import local party info"
+    cron:
+      name: "Import Local Parties"
+      minute: "*/5"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/local_parties.csv && /usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py  import_local_parties /tmp/local_parties.csv"
+      disabled: yes
+
+  - name: "Import local party info"
+    cron:
+      name: "Import Pledges"
+      minute: "*/5"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQvUX2DZEUwj43eVab7xp5tq3ocD28ol-QiQEWZOExMnI52Ih9pF1LwbZZGzKZE3wRQDtrRIwIM3dLA/pub?gid=0&single=true&output=csv' > /tmp/pledges.csv && /usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py  import_candidate_pledges /tmp/pledges.csv"
       disabled: yes
 
   - name: "Import CVs"
@@ -97,7 +111,7 @@
       name: "Import Leaflets"
       hour: "4"
       job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_leaflets"
-      disabled: no
+      disabled: yes
 
   - name: "Import Nesta Backgrounds"
     cron:
@@ -111,6 +125,15 @@
       name: "Import Results Atom"
       job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_results_atom"
       disabled: yes
+
+  - name: "Import Votes Cast"
+    cron:
+      minute: "1"
+      hour: "*/2"
+      name: "Import Votes Cast"
+      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_votes_cast"
+      disabled: no
+    when: wcivf_controller is not defined
 
 
 # Reboot jobs
@@ -144,4 +167,5 @@
       minute: 20
       hour: 0
       job: "/usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py init_data --full"
+      disabled: yes
     when: wcivf_controller is defined

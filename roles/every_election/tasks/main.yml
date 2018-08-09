@@ -103,7 +103,7 @@
 
 - cronvar:
     name: MAILTO
-    value: "{{ cron_email }}"
+    value: "{{ cron_email|format('ee') }}"
     user: "{{ ee_name }}"
 
 - name: Schedule sync local EE data from source
