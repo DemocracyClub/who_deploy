@@ -16,14 +16,14 @@
   - name: "Process log queue"
     cron:
       name: "Process log queue"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py process_log_queue"
+      job: "{{ project_name }}_cron_cmd process_log_queue"
 
   - name: "Import wikipedia"
     cron:
       name: "Import wikipedia"
       minute: "30"
       hour: 1
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_wikipedia_bios"
+      job: "{{ project_name }}_cron_cmd import_wikipedia_bios"
       disabled: no
 
   - name: "Import Elections"
@@ -31,7 +31,7 @@
       name: "Import Elections"
       minute: "10"
       hour: "*/2"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_elections"
+      job: "{{ project_name }}_cron_cmd import_elections"
       disabled: no
 
   - name: "Import Posts"
@@ -39,7 +39,7 @@
       name: "Import Posts"
       minute: "30"
       hour: "*/2"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_posts"
+      job: "{{ project_name }}_cron_cmd import_posts"
       disabled: no
 
   - name: "Import Parties"
@@ -47,7 +47,7 @@
       name: "Import Parties"
       minute: "35"
       hour: "*/2"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_parties"
+      job: "{{ project_name }}_cron_cmd import_parties"
       disabled: no
 
   - name: "Import People"
@@ -55,27 +55,27 @@
       name: "Import People"
       minute: "40"
       hour: "*/2"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_people"
+      job: "{{ project_name }}_cron_cmd import_people"
       disabled: no
 
   - name: "Import Recent People"
     cron:
       name: "Import Recent People"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_people --recent"
+      job: "{{ project_name }}_cron_cmd import_people --recent"
       disabled: no
 
   - name: "Import Companies"
     cron:
       name: "Import Companies"
       hour: "2"
-      job: "curl --silent 'https://raw.githubusercontent.com/EdwardBetts/companies-house/master/companies.csv' > /tmp/companies.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_companies /tmp/companies.csv"
+      job: "curl --silent 'https://raw.githubusercontent.com/EdwardBetts/companies-house/master/companies.csv' > /tmp/companies.csv && {{ project_name }}_cron_cmd import_companies /tmp/companies.csv"
       disabled: no
 
   - name: "Import Hustings"
     cron:
       name: "Import Hustings"
       hour: "5"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=0&single=true&output=csv' > /tmp/hustings.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_hustings /tmp/hustings.csv --quiet"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=0&single=true&output=csv' > /tmp/hustings.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings.csv --quiet"
       disabled: no
 
   - name: "Import Manifestos"
@@ -103,21 +103,21 @@
     cron:
       name: "Import CVs"
       hour: "2"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_cvs"
+      job: "{{ project_name }}_cron_cmd import_cvs"
       disabled: no
 
   - name: "Import Leaflets"
     cron:
       name: "Import Leaflets"
       hour: "4"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_leaflets"
+      job: "{{ project_name }}_cron_cmd import_leaflets"
       disabled: yes
 
   - name: "Import Nesta Backgrounds"
     cron:
       name: "Import Nesta Backgrounds"
       hour: "2"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/19_o6rm6sfrkO-C4PPZXSDl2bCWjdCJ8a7lbG4vz4JbM/pub?gid=1658209649&single=true&output=csv' > /tmp/nesta.csv && /usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_nesta_backgrounds /tmp/nesta.csv"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/19_o6rm6sfrkO-C4PPZXSDl2bCWjdCJ8a7lbG4vz4JbM/pub?gid=1658209649&single=true&output=csv' > /tmp/nesta.csv && {{ project_name }}_cron_cmd import_nesta_backgrounds /tmp/nesta.csv"
       disabled: no
 
   - name: "Import Results Atom"
@@ -125,7 +125,7 @@
       name: "Import Results Atom"
       minute: "10"
       hour: "*/2"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_results_atom"
+      job: "{{ project_name }}_cron_cmd import_results_atom"
       disabled: no
 
   - name: "Import Votes Cast"
@@ -133,7 +133,7 @@
       minute: "1"
       hour: "*/2"
       name: "Import Votes Cast"
-      job: "/usr/local/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py import_votes_cast"
+      job: "{{ project_name }}_cron_cmd import_votes_cast"
       disabled: no
     when: wcivf_controller is not defined
 
