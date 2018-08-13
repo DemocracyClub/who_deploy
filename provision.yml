@@ -32,6 +32,7 @@
     - install_initial
     - postgresql
     - every_election
+    - django_manage_py_cron
   handlers:
     - include: handlers.yml
   tasks:
