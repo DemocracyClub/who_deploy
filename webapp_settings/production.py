@@ -53,11 +53,7 @@ GOCARDLESS_ACCESS_TOKEN = "{{ vault_gocardless_access_token }}"
 
 CHECK_HOST_DIRTY = True
 DIRTY_FILE_PATH = "~/server_dirty"
-{% if wcivf_controller|default(False) %}
-EE_BASE = "https://elections.democracyclub.org.uk"
-{% else %}
 EE_BASE = "http://localhost:8000"
-{% endif %}
 
 EMAIL_SIGNUP_ENDPOINT = 'https://democracyclub.org.uk/mailing_list/api_signup/v1/'
 EMAIL_SIGNUP_API_KEY = '{{ vault_email_signup_api_key }}'

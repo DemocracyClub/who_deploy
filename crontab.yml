@@ -135,7 +135,6 @@
       name: "Import Votes Cast"
       job: "{{ project_name }}_cron_cmd import_votes_cast"
       disabled: no
-    when: wcivf_controller is not defined
 
 
 # Reboot jobs
