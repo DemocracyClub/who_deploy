@@ -142,3 +142,5 @@
       ec2_lc:
         name: "wcivf_{{ aws_env }}-{{ old_lc_num }}"
         state: absent
+
+- import_playbook: tag_instances.yml
