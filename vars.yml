@@ -48,5 +48,6 @@ system_packages:
 python_packages:
   - pip
   - virtualenv
+  - ec2_tag_conditional
 initfiles:
   - gunicorn

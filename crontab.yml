@@ -152,22 +152,19 @@
     cron:
       name: "Back up data"
       minute: 16
-      job: "/usr/local/bin/output-on-error ~/backup_db_to_s3.sh"
-    when: wcivf_controller is defined
+      job: "instance-tags "Env=prod" && instance-tags "controller=True" && /usr/local/bin/output-on-error ~/backup_db_to_s3.sh"
 
   - name: Batch feedback to Slack
     cron:
       name: "Batch feedback to Slack"
       minute: 0
       hour: 9
-      job: "/usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py batch_feedback_to_slack --hours=24"
-    when: wcivf_controller is defined
+      job: "instance-tags "Env=prod" && instance-tags "controller=True" && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours=24"
 
   - name: Init full data at 20 past
     cron:
       name: "Init data"
       minute: 20
       hour: 0
-      job: "/usr/local/bin/output-on-error /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py init_data --full"
+      job: "instance-tags "controller=True" && {{ project_name }}_cron_cmd init_data --full"
       disabled: yes
-    when: wcivf_controller is defined
