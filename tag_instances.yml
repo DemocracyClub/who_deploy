@@ -1,0 +1,56 @@
+- hosts: 127.0.0.1
+  connection: local
+  vars:
+    region: "{{ lookup('env', 'AWS_REGION') or 'eu-west-2' }}"
+  environment:
+    AWS_REGION: "{{ region }}"
+  tasks:
+
+    - name: Gathers facts
+      ec2_instance_facts:
+        region: "{{ region }}"
+        filters:
+         "tag:Name": "wcivf-asg"
+         "tag:Env": "prod"
+         instance-state-name: running
+      register: ec2_metadata
+
+    - debug:
+        msg: "{{ item.instance_id }}"
+      with_items:
+        '{{ec2_metadata.instances}}'
+
+
+    - name: Remove controller tag
+      ec2_tag:
+        resource: '{{ item.instance_id }}'
+        region: '{{ region }}'
+        state: absent
+        tags:
+          controller: 'True'
+      with_items:
+        '{{ ec2_metadata.instances }}'
+
+    - name: Add tag to instances
+      ec2_tag:
+        resource: '{{ ec2_metadata.instances.0.instance_id }}'
+        region: '{{ region }}'
+        state: present
+        tags:
+          controller: 'True'
+
+
+    - name: Get controller list
+      ec2_instance_facts:
+        region: "{{ region }}"
+        filters:
+         "tag:Name": "wcivf-asg"
+         "tag:Env": "prod"
+         "tag:controller": "True"
+         instance-state-name: running
+      register: ec2_metadata
+
+
+    - assert:
+        that: ec2_metadata.instances | count == 1
+        msg: "More than one controller found. You'll need to clean this up in the EC2 console manually"
