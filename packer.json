@@ -3,7 +3,8 @@
   "variables": {
     "build_region": "eu-west-2",
     "branch": "master",
-    "max_spot_price": "0.1"
+    "max_spot_price": "0.1",
+    "app_name": "wcivf"
   },
   "builders": [
     {
@@ -18,10 +19,20 @@
       "spot_price": "{{ user `max_spot_price`}}",
       "ssh_username": "ubuntu",
       "tags": {
+        "application": "{{user `app_name` }}",
         "build_date":"{{isotime}}"
       },
       "run_tags": {
+        "application": "{{user `app_name` }}",
         "Name": "packer-ami-build"
+      },
+      "run_volume_tags": {
+        "application": "{{user `app_name` }}",
+        "build_date":"{{isotime}}"
+      },
+      "snapshot_tags": {
+        "application": "{{user `app_name` }}",
+        "build_date":"{{isotime}}"
       }
     }
   ],
