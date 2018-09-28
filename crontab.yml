@@ -151,7 +151,7 @@
     cron:
       name: "Back up data"
       minute: 16
-      job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && output-on-error ~/backup_db_to_s3.sh"
+      job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && output-on-error {{ project_root }}/backup_db_to_s3.sh"
 
   - name: Batch feedback to Slack
     cron:
