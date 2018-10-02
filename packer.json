@@ -41,6 +41,7 @@
       "type": "ansible",
       "playbook_file": "./provision.yml",
       "groups":["production", "servers", "remote"],
+      "ansible_env_vars": ["ANSIBLE_HOST_KEY_CHECKING=False"],
       "extra_arguments": [
         "--extra-vars", "packer=1"
       ]
