@@ -140,7 +140,7 @@
 # Reboot jobs
   - name: Init data on restart
     cron:
-      name: "Init data"
+      name: "Init data on reboot"
       special_time: reboot
       job: "sleep 30s && {{ project_root }}/load_database_from_s3.sh && {{ project_name }}_cron_cmd init_data"
 
@@ -162,7 +162,7 @@
 
   - name: Init full data at 20 past
     cron:
-      name: "Init data"
+      name: "Init data every hour"
       minute: 20
       hour: 0
       job: "/usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd init_data --full"
