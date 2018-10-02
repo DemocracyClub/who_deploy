@@ -1,23 +1,30 @@
 ---
 - hosts: all
+  gather_facts: no
+  vars_files:
+    - vars.yml
+    - vault.yml
+  become: true
   pre_tasks:
+    - name: Stop auto update
+      raw: systemctl disable apt-daily.timer
+
     - name: Install python for Ansible
       raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
       register: output
       changed_when: 'output.stdout != ""'
-    - name: setup
-      setup: filter=ansible_*
+      become: true
+
+    - name: Gather facts after Python is definitely present.
+      setup:
+
     - name: Install output on error
       template:
         src: files/scripts/output-on-error
         dest: /usr/bin/output-on-error
         mode: 0777
       become_user: root
-  vars_files:
-    - vars.yml
-    - vault.yml
-  gather_facts: false
-  become: true
+
   roles:
     - install_initial
     - postgresql
@@ -26,6 +33,18 @@
   handlers:
     - include: handlers.yml
   tasks:
+  - name: Create apt-daily.timer.d directory
+    file: path=/etc/systemd/system/apt-daily.timer.d state=directory
+
+  - name: Prevent systemd daily update race condition
+    template:
+      src: "files/systemd/apt-daily.timer.conf"
+      dest: "/etc/systemd/system/apt-daily.timer.d/apt-daily.timer.conf"
+
+  - name: Start auto update again
+    raw: systemctl start apt-daily.timer
+
+
   - name: Create the project directory.
     file: state=directory path={{ project_root }}
 
