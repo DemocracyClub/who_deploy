@@ -24,6 +24,9 @@
       chdir: "{{ project_root }}"
       executable: /bin/bash
 
+  - name: Migrate Django database.
+    shell: "{{ project_root }}/env/bin/python {{ project_root }}/code/manage.py migrate --noinput"
+
   - name: Start cron
     service: name=cron state=started
     become_user: root
