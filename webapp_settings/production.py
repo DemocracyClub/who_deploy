@@ -42,7 +42,7 @@ DATABASE_ROUTERS = [
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 WDIV_API_KEY = "{{ vault_wdiv_api_key }}"
-SLACK_FEEDBACK_WEBHOOK_URL = "{{ vault_slack_foodback_webook_url }}"  # noqa
+SLACK_FEEDBACK_WEBHOOK_URL = "{{ vault_slack_feedback_webhook_url }}"  # noqa
 
 
 GOCARDLESS_APP_ID="{{ vault_gocardless_app_id }}"
