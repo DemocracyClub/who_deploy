@@ -50,17 +50,10 @@
       job: "{{ project_name }}_cron_cmd import_parties"
       disabled: no
 
-  - name: "Import People"
-    cron:
-      name: "Import People"
-      minute: "40"
-      hour: "*/2"
-      job: "{{ project_name }}_cron_cmd import_people"
-      disabled: no
-
   - name: "Import Recent People"
     cron:
       name: "Import Recent People"
+      hour: 0-2,4-23
       job: "{{ project_name }}_cron_cmd import_people --recent"
       disabled: no
 
@@ -142,7 +135,7 @@
     cron:
       name: "Init data on reboot"
       special_time: reboot
-      job: "sleep 30s && {{ project_root }}/load_database_from_s3.sh && {{ project_name }}_cron_cmd init_data"
+      job: "sleep 30s && {{ project_root }}/load_database_from_s3.sh && {{ project_name }}_cron_cmd migrate --noinput && {{ project_name }}_cron_cmd init_data"
 
 
 
@@ -160,10 +153,10 @@
       hour: 9
       job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours=24"
 
-  - name: Init full data at 20 past
+  - name: Init full data at 3.20
     cron:
       name: "Init data every hour"
       minute: 20
-      hour: 0
+      hour: 3
       job: "/usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd init_data --full"
-      disabled: yes
+      disabled: no
