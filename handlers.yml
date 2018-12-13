@@ -13,15 +13,6 @@
     state: restarted
   become_user: root
   listen: restart web frontend
-  when: ansible_distribution_version == "16.04"
-
-- name: restart web frontend upstart
-  service:
-    name: "{{ project_name }}_gunicorn"
-    state: restarted
-  become_user: root
-  listen: restart web frontend
-  when: ansible_distribution_version == "14.04"
 
 - name: reload systemd
   become: yes
