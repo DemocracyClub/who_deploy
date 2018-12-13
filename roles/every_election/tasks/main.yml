@@ -9,6 +9,7 @@
   user:
     home: "{{ ee_project_root }}/home"
     name: "{{ ee_name }}"
+    shell: "/bin/bash"
     state: present
 
 

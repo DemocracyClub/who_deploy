@@ -52,6 +52,7 @@
     user:
       home: "{{ project_root }}/home"
       name: "{{ project_name }}"
+      shell: "/bin/bash"
       state: present
 
   - name: Update the project directory.
