@@ -35,6 +35,12 @@
       owner: root
       mode: 0755
 
+  - name: Upgrade NPM
+    npm:
+      name: npm
+      global: true
+      state: latest
+
   - name: Install "yuglify" node.js package.
     npm:
       name: yuglify
