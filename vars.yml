@@ -7,7 +7,7 @@ branch: master
 domain: whocanivotefor.co.uk
 nickname: production
 cron_email: developers+wcivf_%s@democracyclub.org.uk
-postgresql_version: 9.5
+postgresql_version: 10
 system_packages:
   - aptitude
   - build-essential

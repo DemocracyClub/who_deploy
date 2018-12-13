@@ -17,10 +17,16 @@
 - name: Install postgres_hba configuration file.
   template: src=files/conf/pg_hba.conf dest=/etc/postgresql/{{postgresql_version}}/main/pg_hba.conf
 
-- name: Install postgresql.conf
-  template:
-    src: files/conf/postgresql.conf
-    dest: "/etc/postgresql/{{postgresql_version}}/main/postgresql.conf"
+- name: Configure Postgres
+  lineinfile:
+    dest: /etc/postgresql/{{postgresql_version}}/main/postgresql.conf
+    line: "{{ item }}"
+    state: present
+  with_items:
+    - "effective_cache_size = 256MB"
+    - "maintenance_work_mem = 256MB"
+    - "shared_buffers = 128MB"
+    - "work_mem = 100MB"
 
 - name: restart postgres
   service: name=postgresql state=restarted
