@@ -31,7 +31,7 @@
     - every_election
     - django_manage_py_cron
   handlers:
-    - include: handlers.yml
+    - import_tasks: handlers.yml
   tasks:
   - name: Create apt-daily.timer.d directory
     file: path=/etc/systemd/system/apt-daily.timer.d state=directory
@@ -135,4 +135,4 @@
       state: touch
       mode: "u=rw,g=r,o=r"
 
-- include: deploy.yml
+- import_playbook: deploy.yml

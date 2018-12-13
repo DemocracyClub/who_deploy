@@ -1,7 +1,9 @@
 ---
   - name: Install required system packages.
-    apt: pkg={{ item }} state=installed update-cache=yes
-    with_items: "{{ system_packages }}"
+    apt:
+      name: "{{ system_packages }}"
+      state: present
+      update_cache: yes
 
   - name: Upgrade all packages
     apt:

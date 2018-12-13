@@ -1,14 +1,13 @@
 ---
 - name: Install postgres
   apt:
-    pkg: "{{ item }}"
-    state: installed
+    name:
+      - "postgresql-{{postgresql_version}}"
+      - "postgresql-client-{{postgresql_version}}"
+      - "postgresql-contrib-{{postgresql_version}}"
+    state: present
     update-cache: yes
     cache_valid_time: 43200
-  with_items:
-    - "postgresql-{{postgresql_version}}"
-    - "postgresql-client-{{postgresql_version}}"
-    - "postgresql-contrib-{{postgresql_version}}"
 
 - name: Install python2 psycopg2
   pip:
