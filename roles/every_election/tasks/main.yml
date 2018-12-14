@@ -9,6 +9,7 @@
   user:
     home: "{{ ee_project_root }}/home"
     name: "{{ ee_name }}"
+    shell: "/bin/bash"
     state: present
 
 
@@ -78,13 +79,11 @@
   template:
     src: "ee_gunicorn.service"
     dest: "/etc/systemd/system/ee_gunicorn.service"
-  when: ansible_distribution_version == "16.04"
 
 - name: systemd gunicorn tmpfiles.d
   template:
     src: "ee_gunicorn.tmpfiles"
     dest: "/etc/tmpfiles.d/ee_gunicorn.conf"
-  when: ansible_distribution_version == "16.04"
 
 - name: "enable gunicorn"
   shell: "systemctl enable ee_gunicorn.service"

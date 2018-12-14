@@ -55,8 +55,7 @@
 
 
   handlers:
-    - include: handlers.yml
-      static: yes
+    - import_tasks: handlers.yml
 
 
-- include: crontab.yml
+- import_playbook: crontab.yml

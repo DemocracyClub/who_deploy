@@ -2,7 +2,7 @@
 set -x
 
 # Get the latest backup file
-LATEST_FILE=`s3cmd ls s3://dc-ee-short-term-backups/who/ | sort | tail -n 1 | rev | cut -d' ' -f 1 | rev`
+LATEST_FILE=`/usr/local/bin/s3cmd ls s3://dc-ee-short-term-backups/who/ | sort | tail -n 1 | rev | cut -d' ' -f 1 | rev`
 FILENAME=`echo $LATEST_FILE | rev | cut -d '/' -f 1 | rev`
 SRCDIR='/tmp/s3backups_{{ project_name }}'
 mkdir -p $SRCDIR
@@ -16,7 +16,7 @@ DB={{ project_name }}
 
 
 echo $FILENAME
-s3cmd get --skip-existing $LATEST_FILE $SRCDIR --region=eu-west-2
+/usr/local/bin/s3cmd get --skip-existing $LATEST_FILE $SRCDIR --region=eu-west-2
 dropdb --if-exists $DB
 createdb $DB
 pg_restore -U $USER  -d $DB  $SRCDIR/$FILENAME

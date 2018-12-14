@@ -7,7 +7,7 @@ branch: master
 domain: whocanivotefor.co.uk
 nickname: production
 cron_email: developers+wcivf_%s@democracyclub.org.uk
-postgresql_version: 9.5
+postgresql_version: 10
 system_packages:
   - aptitude
   - build-essential
@@ -24,24 +24,23 @@ system_packages:
   - libgtk2.0-dev
   - libjpeg-dev
   - libpq-dev
-  - libssl-dev
   - libxml2-dev
   - libxslt-dev
   - libyaml-dev
   - memcached
   - nginx
   - npm
-  - nodejs-legacy
+  - nodejs
   - postfix
   - postgis
   - python-dev
   - python3-dev
   - python-pip
+  - python3-pip
   - python-psycopg2
   - python-setuptools
   - python-virtualenv
   - redis-server
-  - s3cmd
   - yui-compressor
   - unzip
   - unattended-upgrades
