@@ -32,9 +32,9 @@ mkdir -p $SRCDIR
 pg_dump  -Fc $DB -f $SRCDIR/$NOWDATE-backup.dump
 
 # # upload backup to s3
-/usr/bin/s3cmd put $SRCDIR/$NOWDATE-backup.dump s3://$SHORT_TERM_BUCKET/$DESTDIR/
+/usr/local/bin/s3cmd put $SRCDIR/$NOWDATE-backup.dump s3://$SHORT_TERM_BUCKET/$DESTDIR/
 
-/usr/bin/s3cmd expire s3://$SHORT_TERM_BUCKET
+/usr/local/bin/s3cmd expire s3://$SHORT_TERM_BUCKET
 
 
 #remove all files in our source directory
