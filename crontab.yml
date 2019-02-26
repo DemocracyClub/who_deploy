@@ -82,7 +82,7 @@
     cron:
       name: "Import Local Parties"
       hour: "5"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/local_parties.csv && {{ project_name }}_cron_cmd import_local_parties /tmp/local_parties.csv"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTO-z37bBMxKwCuORIl2vE8v0kMFHlHETvBhGjuDidM1Wy4QxQawRou53kNLjEiJmpMhebRqoWZL9s-/pub?gid=0&single=true&output=csv' > /tmp/local_parties.csv && {{ project_name }}_cron_cmd import_local_parties /tmp/local_parties.csv"
       disabled: no
 
   - name: "Import local party info"
