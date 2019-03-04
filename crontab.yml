@@ -78,14 +78,20 @@
       job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/manifestos.csv && {{ project_name }}_cron_cmd import_manifestos /tmp/manifestos.csv"
       disabled: no
 
-  - name: "Import local party info"
+  - name: "Import local party info 2018"
     cron:
       name: "Import Local Parties"
-      hour: "5"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/local_parties.csv && {{ project_name }}_cron_cmd import_local_parties /tmp/local_parties.csv"
+      minute: "5"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/local_parties_2018.csv && {{ project_name }}_cron_cmd import_local_parties --election-date 2018-05-03 /tmp/local_parties_2018.csv"
+      disabled: no
+  - name: "Import local party info 2019"
+    cron:
+      name: "Import Local Parties"
+      minute: "15"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTO-z37bBMxKwCuORIl2vE8v0kMFHlHETvBhGjuDidM1Wy4QxQawRou53kNLjEiJmpMhebRqoWZL9s-/pub?gid=0&single=true&output=csv' > /tmp/local_parties_2019.csv && {{ project_name }}_cron_cmd import_local_parties --election-date 2019-05-02 /tmp/local_parties_2019.csv"
       disabled: no
 
-  - name: "Import local party info"
+  - name: "Import Pledges"
     cron:
       name: "Import Pledges"
       hour: "3"
