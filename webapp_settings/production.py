@@ -58,3 +58,11 @@ EE_BASE = "https://elections.democracyclub.org.uk"
 
 EMAIL_SIGNUP_ENDPOINT = 'https://democracyclub.org.uk/mailing_list/api_signup/v1/'
 EMAIL_SIGNUP_API_KEY = '{{ vault_email_signup_api_key }}'
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="{{ VAULT_SENTRY_DSN }}",
+    integrations=[DjangoIntegration()]
+)
