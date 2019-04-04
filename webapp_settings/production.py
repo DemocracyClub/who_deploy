@@ -63,6 +63,6 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 sentry_sdk.init(
-    dsn="{{ VAULT_SENTRY_DSN }}",
+    dsn="{{ vault_sentry_dsn }}",
     integrations=[DjangoIntegration()]
 )
