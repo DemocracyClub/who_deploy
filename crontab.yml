@@ -65,11 +65,18 @@
       job: "curl --silent 'https://raw.githubusercontent.com/EdwardBetts/companies-house/master/companies.csv' > /tmp/companies.csv && {{ project_name }}_cron_cmd import_companies /tmp/companies.csv"
       disabled: no
 
-  - name: "Import Hustings"
+  - name: "Import 2018 Hustings"
     cron:
-      name: "Import Hustings"
+      name: "Import 2018 Hustings"
       hour: "5"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=0&single=true&output=csv' > /tmp/hustings.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings.csv --quiet"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=0&single=true&output=csv' > /tmp/hustings_2018.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_2018.csv --quiet --for-date 2018-05-03"
+      disabled: no
+
+  - name: "Import 2019 Hustings"
+    cron:
+      name: "Import 2019 Hustings"
+      minute: "5,35"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=1261632941&single=true&output=csv' > /tmp/hustings_2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings.csv --quiet --for-date 2019-05-02"
       disabled: no
 
   - name: "Import Manifestos"
