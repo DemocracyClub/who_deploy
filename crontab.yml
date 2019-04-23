@@ -53,7 +53,7 @@
   - name: "Import Recent People"
     cron:
       name: "Import Recent People"
-      minute: "*/10"
+      minute: "*/2"
       hour: 0-2,4-23
       job: "{{ project_name }}_cron_cmd import_people --recent"
       disabled: no
