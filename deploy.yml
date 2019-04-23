@@ -45,6 +45,12 @@
       app_path: "{{ project_root }}/code/"
       virtualenv: "{{ project_root }}/env/"
 
+  - name: Ensure party emblems exist
+    django_manage:
+      command: import_parties
+      app_path: "{{ project_root }}/code/"
+      virtualenv: "{{ project_root }}/env/"
+
   - name: Install rsyslog configuration files
     template:
       src: files/conf/rsyslog.conf
