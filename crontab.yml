@@ -76,7 +76,7 @@
     cron:
       name: "Import 2019 Hustings"
       minute: "5,35"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=1261632941&single=true&output=csv' > /tmp/hustings_2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings.csv --quiet --for-date 2019-05-02"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=1261632941&single=true&output=csv' > /tmp/hustings_2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_2019.csv --quiet --for-date 2019-05-02"
       disabled: no
 
   - name: "Import Manifestos"
