@@ -1,0 +1,12 @@
+---
+- hosts:
+   - all
+  vars_files:
+    - vars.yml
+    - vault.yml
+  become: true
+  become_user: "{{ project_name }}"
+
+  tasks:
+  - name: Clear redis cache
+    raw: redis-cli flushall
