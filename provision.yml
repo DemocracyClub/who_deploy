@@ -9,6 +9,9 @@
     - name: Stop auto update
       raw: systemctl disable apt-daily.timer
 
+    - name: Remove all partial apt files
+      raw: rm -rf /var/lib/apt/lists/partial/*
+
     - name: Install python for Ansible
       raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
       register: output

@@ -4,12 +4,12 @@
     region: "{{ lookup('env', 'AWS_REGION') or 'eu-west-2' }}"
     regions:
       eu-west-2:
-        ami_id: ami-03d83c9f97cac62d7 # The Who image ID from packer
+        ami_id: ami-0c298e27b7ef6a3aa # The Who image ID from packer
         # The default VPC
         vpc_id: vpc-110bfc78
     vpc_id: "{{ regions[region].vpc_id }}"
     ami_id: "{{ regions[region].ami_id }}"
-    lc_num: 66
+    lc_num: 69
 
     # elb_ssl_arn: "arn:aws:iam::225244788755:server-certificate/ps-prod-5"
     # elb_ssl_arn: "arn:aws:acm:eu-west-2:929325949831:certificate/0914a080-ce61-4dd3-80cd-4f35348634c3"
@@ -123,12 +123,12 @@
         tags:
           - Env: "{{ aws_env }}"
             Name: wcivf-asg
-        desired_capacity: 1
+        desired_capacity: 4
         health_check_type: ELB
         launch_config_name: "{{launchconfig.name}}"
         load_balancers: ["{{ elb_result.elb.name }}"]
         max_size: 10
-        min_size: 1
+        min_size: 2
         replace_all_instances: "{{ replace_all|default(False) }}"
         termination_policies: [ OldestLaunchConfiguration, ClosestToNextInstanceHour ]
         # Yes, subnets go in vpc_zone_identifier. Blame Garethr.
