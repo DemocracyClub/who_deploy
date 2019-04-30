@@ -93,6 +93,14 @@
       job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/manifestos.csv && {{ project_name }}_cron_cmd import_manifestos /tmp/manifestos.csv"
       disabled: no
 
+  - name: "Import 2019 Manifestos"
+    cron:
+      name: "Import 2019 Manifestos"
+      hour: "4"
+      minute: "10"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTO-z37bBMxKwCuORIl2vE8v0kMFHlHETvBhGjuDidM1Wy4QxQawRou53kNLjEiJmpMhebRqoWZL9s-/pub?gid=0&single=true&output=csv' > /tmp/manifestos_2019.csv && {{ project_name }}_cron_cmd import_manifestos /tmp/manifestos_2019.csv"
+      disabled: no
+
   - name: "Import local party info 2018"
     cron:
       name: "Import Local Parties"
