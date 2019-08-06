@@ -37,7 +37,7 @@ system_packages:
   - python3-dev
   - python-pip
   - python3-pip
-  - python-psycopg2
+  - python3-psycopg2
   - python-setuptools
   - python-virtualenv
   - redis-server
