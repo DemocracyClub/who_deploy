@@ -134,7 +134,7 @@
         # Yes, subnets go in vpc_zone_identifier. Blame Garethr.
         # vpc_zone_identifier: "{{ subnets.subnets | map(attribute='id') |list }}"
         # Wait for this long to replace old instances
-        wait_timeout: 300 # importing people can take ages
+        wait_timeout: 600 # importing people can take ages
       when: not spot_price is defined
 
 
