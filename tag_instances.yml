@@ -10,7 +10,7 @@
       ec2_instance_facts:
         region: "{{ region }}"
         filters:
-         "tag:Name": "wcivf-asg"
+         "tag:Name": "wcivf_asg"
          "tag:Env": "prod"
          instance-state-name: running
       register: ec2_metadata
@@ -39,12 +39,11 @@
         tags:
           controller: 'True'
 
-
     - name: Get controller list
       ec2_instance_facts:
         region: "{{ region }}"
         filters:
-         "tag:Name": "wcivf-asg"
+         "tag:Name": "wcivf_asg"
          "tag:Env": "prod"
          "tag:controller": "True"
          instance-state-name: running

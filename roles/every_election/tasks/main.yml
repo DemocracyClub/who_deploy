@@ -112,5 +112,6 @@
     hour: 4
     job: "output-on-error /var/www/{{ ee_name }}/env/bin/python /var/www/{{ ee_name }}/code/manage.py sync_elections"
     user: "{{ ee_name }}"
+    disabled: yes
   become_user: root
   become: true

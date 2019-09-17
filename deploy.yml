@@ -51,6 +51,27 @@
       app_path: "{{ project_root }}/code/"
       virtualenv: "{{ project_root }}/env/"
 
+
+# TMP
+  - name: Import elections
+    django_manage:
+      command: "import_elections"
+      app_path: "{{ project_root }}/code/"
+      virtualenv: "{{ project_root }}/env/"
+
+  - name: Import posts
+    django_manage:
+      command: "import_posts"
+      app_path: "{{ project_root }}/code/"
+      virtualenv: "{{ project_root }}/env/"
+# TMP
+
+  - name: Import EU party info
+    django_manage:
+      command: import_euro_parl_parties
+      app_path: "{{ project_root }}/code/"
+      virtualenv: "{{ project_root }}/env/"
+
   - name: Install rsyslog configuration files
     template:
       src: files/conf/rsyslog.conf
@@ -63,5 +84,6 @@
   handlers:
     - import_tasks: handlers.yml
 
-
+- import_playbook: clear_redis_cache.yml
 - import_playbook: crontab.yml
+- import_playbook: tag_instances.yml

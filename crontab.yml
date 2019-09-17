@@ -53,7 +53,7 @@
   - name: "Import Recent People"
     cron:
       name: "Import Recent People"
-      minute: "*/2"
+      minute: "*/10"
       hour: 0-2,4-23
       job: "{{ project_name }}_cron_cmd import_people --recent"
       disabled: no
@@ -145,15 +145,13 @@
   - name: "Import Results Atom"
     cron:
       name: "Import Results Atom"
-      minute: "10"
-      hour: "*/2"
+      minute: "*/15"
       job: "{{ project_name }}_cron_cmd import_results_atom"
-      disabled: no
+      disabled: yes
 
   - name: "Import Votes Cast"
     cron:
-      minute: "1"
-      hour: "*/2"
+      minute: "*/15"
       name: "Import Votes Cast"
       job: "{{ project_name }}_cron_cmd import_votes_cast"
       disabled: no

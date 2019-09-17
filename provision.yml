@@ -12,6 +12,12 @@
     - name: Remove all partial apt files
       raw: rm -rf /var/lib/apt/lists/partial/*
 
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt-get -y update && apt-get install -y python-minimal)
+      register: output
+      changed_when: 'output.stdout != ""'
+      become: true
+
     - name: Gather facts after Python is definitely present.
       setup:
 
