@@ -53,15 +53,9 @@
 
 
 # TMP
-  - name: Import elections
+  - name: Import ballots current
     django_manage:
-      command: "import_elections"
-      app_path: "{{ project_root }}/code/"
-      virtualenv: "{{ project_root }}/env/"
-
-  - name: Import posts
-    django_manage:
-      command: "import_posts"
+      command: "import_ballots --current"
       app_path: "{{ project_root }}/code/"
       virtualenv: "{{ project_root }}/env/"
 # TMP

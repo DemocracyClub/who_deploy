@@ -26,26 +26,26 @@
       job: "{{ project_name }}_cron_cmd import_wikipedia_bios"
       disabled: no
 
-  - name: "Import Elections"
+  - name: "Import Ballot"
     cron:
-      name: "Import Elections"
-      minute: "10"
-      hour: "*/2"
-      job: "{{ project_name }}_cron_cmd import_elections"
+      name: "Import Ballots"
+      minute: "50"
+      hour: "2"
+      job: "{{ project_name }}_cron_cmd import_ballots"
       disabled: no
 
-  - name: "Import Posts"
+  - name: "Import current Ballot"
     cron:
-      name: "Import Posts"
-      minute: "30"
+      name: "Import current Ballots"
+      minute: "35"
       hour: "*/2"
-      job: "{{ project_name }}_cron_cmd import_posts"
+      job: "{{ project_name }}_cron_cmd import_ballots --current"
       disabled: no
 
   - name: "Import Parties"
     cron:
       name: "Import Parties"
-      minute: "35"
+      minute: "10"
       hour: "*/2"
       job: "{{ project_name }}_cron_cmd import_parties"
       disabled: no
