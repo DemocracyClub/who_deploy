@@ -29,7 +29,7 @@
     pip:
       requirements: "{{ project_root }}/code/requirements.txt"
       virtualenv: "{{ project_root }}/env/"
-      virtualenv_python: "python3"
+      # virtualenv_python: "python3"
     when: (application_git_repo.changed) or (application_config.changed)
 
   - name: Migrate Django database.
@@ -60,11 +60,11 @@
       virtualenv: "{{ project_root }}/env/"
 # TMP
 
-  - name: Import EU party info
-    django_manage:
-      command: import_euro_parl_parties
-      app_path: "{{ project_root }}/code/"
-      virtualenv: "{{ project_root }}/env/"
+  # - name: Import EU party info
+  #   django_manage:
+  #     command: import_euro_parl_parties
+  #     app_path: "{{ project_root }}/code/"
+  #     virtualenv: "{{ project_root }}/env/"
 
   - name: Install rsyslog configuration files
     template:

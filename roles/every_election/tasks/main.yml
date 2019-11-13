@@ -49,7 +49,7 @@
   pip:
     requirements: "{{ ee_project_root }}/code/requirements.txt"
     virtualenv: "{{ ee_project_root }}/env/"
-    virtualenv_python: python3
+    # virtualenv_python: python3
 
 - name: Create user.
   postgresql_user:
@@ -112,6 +112,6 @@
     hour: 4
     job: "output-on-error /var/www/{{ ee_name }}/env/bin/python /var/www/{{ ee_name }}/code/manage.py sync_elections"
     user: "{{ ee_name }}"
-    disabled: yes
+    disabled: no
   become_user: root
   become: true

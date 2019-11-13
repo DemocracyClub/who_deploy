@@ -43,7 +43,8 @@
       "groups":["production", "servers", "remote"],
       "ansible_env_vars": ["ANSIBLE_HOST_KEY_CHECKING=False"],
       "extra_arguments": [
-        "--extra-vars", "packer=1"
+        "--extra-vars", "packer=1",
+        "--extra-vars", "ansible_python_interpreter=python3"
       ]
 
     },
