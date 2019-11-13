@@ -33,6 +33,7 @@
     - postgresql
     - every_election
     - django_manage_py_cron
+    - lockrun
   handlers:
     - import_tasks: handlers.yml
   tasks:

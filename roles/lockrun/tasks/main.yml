@@ -1,0 +1,14 @@
+---
+
+- name: Copy lockrun source
+  template:
+    src: lockrun.c
+    dest: /tmp/lockrun.c
+    owner: ubuntu
+    mode: '0644'
+
+- name: Compile lockrun
+  shell: gcc lockrun.c -o lockrun && sudo cp lockrun /usr/local/bin/
+  args:
+    chdir: /tmp/
+    creates: lockrun

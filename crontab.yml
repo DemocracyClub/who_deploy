@@ -31,7 +31,7 @@
       name: "Import Ballots"
       minute: "50"
       hour: "2"
-      job: "{{ project_name }}_cron_cmd import_ballots"
+      job: "lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_ballots"
       disabled: no
 
   - name: "Import current Ballot"
@@ -39,7 +39,7 @@
       name: "Import current Ballots"
       minute: "35"
       hour: "*/2"
-      job: "{{ project_name }}_cron_cmd import_ballots --current"
+      job: "lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_ballots --current"
       disabled: no
 
   - name: "Import Parties"
@@ -55,14 +55,14 @@
       name: "Import Recent People"
       minute: "*/10"
       hour: 0-2,4-23
-      job: "{{ project_name }}_cron_cmd import_people --recent"
+      job: "lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_people --recent"
       disabled: no
 
   - name: "Import Companies"
     cron:
       name: "Import Companies"
       hour: "2"
-      job: "curl --silent 'https://raw.githubusercontent.com/EdwardBetts/companies-house/master/companies.csv' > /tmp/companies.csv && {{ project_name }}_cron_cmd import_companies /tmp/companies.csv"
+      job: "curl --silent 'https://raw.githubusercontent.com/EdwardBetts/companies-house/master/2019_companies.csv' > /tmp/companies.csv && {{ project_name }}_cron_cmd import_companies /tmp/companies.csv"
       disabled: no
 
   - name: "Import 2018 Hustings"
@@ -84,6 +84,13 @@
       name: "Import europarl 2019 Hustings"
       minute: "10,45"
       job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=105507981&single=true&output=csv' > /tmp/hustings_europarl_2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_europarl_2019.csv --quiet --for-date 2019-05-23"
+      disabled: no
+
+  - name: "Import GE2019 Hustings"
+    cron:
+      name: "Import GE2019 Hustings"
+      minute: "10,45"
+      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=374893026&single=true&output=csv' > /tmp/hustings_GE2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_GE2019.csv --quiet --for-date 2019-12-12"
       disabled: no
 
   - name: "Import Manifestos"
@@ -146,14 +153,22 @@
     cron:
       name: "Import Results Atom"
       minute: "*/15"
-      job: "{{ project_name }}_cron_cmd import_results_atom"
+      job: "lockrun --lockfile=/tmp/import_results_atom -W -- {{ project_name }}_cron_cmd import_results_atom"
       disabled: yes
 
   - name: "Import Votes Cast"
     cron:
       minute: "*/15"
       name: "Import Votes Cast"
-      job: "{{ project_name }}_cron_cmd import_votes_cast"
+      job: "lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast --current"
+      disabled: no
+
+  - name: "Import Votes Cast"
+    cron:
+      minute: "14"
+      hour: "5"
+      name: "Import Votes Cast"
+      job: "lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast"
       disabled: no
 
 
