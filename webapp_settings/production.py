@@ -53,7 +53,7 @@ GOCARDLESS_ACCESS_TOKEN = "{{ vault_gocardless_access_token }}"
 
 CHECK_HOST_DIRTY = True
 DIRTY_FILE_PATH = "~/server_dirty"
-EE_BASE = "http://localhost:8000"
+# EE_BASE = "http://localhost:8000"
 
 
 EMAIL_SIGNUP_ENDPOINT = 'https://democracyclub.org.uk/mailing_list/api_signup/v1/'
