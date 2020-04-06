@@ -8,228 +8,198 @@
   become_user: "{{ project_name }}"
   tasks:
 
-  - cronvar:
-      name: MAILTO
-      value: "{{ cron_email|format(ec2_tag_Name|default('wcivf')) }}"
-      user: "{{ project_name }}"
+    - cronvar:
+        name: MAILTO
+        value: "{{ cron_email|format(ec2_tag_Name|default('wcivf')) }}"
+        user: "{{ project_name }}"
 
-  - name: "Process log queue"
-    cron:
-      name: "Process log queue"
-      job: "{{ project_name }}_cron_cmd process_log_queue"
+    - name: "Process log queue"
+      cron:
+        name: "Process log queue"
+        job: "{{ project_name }}_cron_cmd process_log_queue"
 
-  - name: "Import wikipedia"
-    cron:
-      name: "Import wikipedia"
-      minute: "30"
-      hour: 1
-      job: "{{ project_name }}_cron_cmd import_wikipedia_bios"
-      disabled: no
+    - name: "Import wikipedia"
+      cron:
+        name: "Import wikipedia"
+        minute: "30"
+        hour: 1
+        job: "{{ project_name }}_cron_cmd import_wikipedia_bios"
+        disabled: no
 
-  - name: "Import Ballot"
-    cron:
-      name: "Import Ballots"
-      minute: "50"
-      hour: "2"
-      job: "/usr/local/bin/lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_ballots"
-      disabled: no
+    - name: "Import Ballot"
+      cron:
+        name: "Import Ballots"
+        minute: "50"
+        hour: "2"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_ballots"
+        disabled: no
 
-  - name: "Import current Ballot"
-    cron:
-      name: "Import current Ballots"
-      minute: "35"
-      hour: "*/2"
-      job: "/usr/local/bin/lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_ballots --current"
-      disabled: no
+    - name: "Import current Ballot"
+      cron:
+        name: "Import current Ballots"
+        minute: "35"
+        hour: "*/2"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_ballots --current"
+        disabled: yes
 
-  - name: "Import Parties"
-    cron:
-      name: "Import Parties"
-      minute: "10"
-      hour: "*/2"
-      job: "{{ project_name }}_cron_cmd import_parties"
-      disabled: no
+    - name: "Import Parties"
+      cron:
+        name: "Import Parties"
+        minute: "10"
+        hour: "2"
+        job: "{{ project_name }}_cron_cmd import_parties"
+        disabled: no
 
-  - name: "Import Recent People"
-    cron:
-      name: "Import Recent People"
-      minute: "*/10"
-      hour: 0-2,4-23
-      job: "/usr/local/bin/lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_people --recent"
-      disabled: no
+    - name: "Import Recent People"
+      cron:
+        name: "Import Recent People"
+        minute: "*/30"
+        hour: 0-2,4-23
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_people --recent"
+        disabled: no
 
-  - name: "Import Companies"
-    cron:
-      name: "Import Companies"
-      minute: "*/15"
-      job: "{{ project_name }}_cron_cmd import_companies"
-      disabled: yes
+    - name: "Import Companies"
+      cron:
+        name: "Import Companies"
+        hour: "2"
+        job: "curl --silent 'https://raw.githubusercontent.com/EdwardBetts/companies-house/master/2019_companies.csv' > /tmp/companies.csv && {{ project_name }}_cron_cmd import_companies /tmp/companies.csv"
+        disabled: yes
 
-  - name: "Import 2018 Hustings"
-    cron:
-      name: "Import 2018 Hustings"
-      hour: "5"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=0&single=true&output=csv' > /tmp/hustings_2018.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_2018.csv --quiet --for-date 2018-05-03"
-      disabled: no
+    - name: "Import 2018 Hustings"
+      cron:
+        name: "Import 2018 Hustings"
+        day: "5"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=0&single=true&output=csv' > /tmp/hustings_2018.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_2018.csv --quiet --for-date 2018-05-03"
+        disabled: no
 
-  - name: "Import 2019 Hustings"
-    cron:
-      name: "Import 2019 Hustings"
-      minute: "5,35"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=1261632941&single=true&output=csv' > /tmp/hustings_2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_2019.csv --quiet --for-date 2019-05-02"
-      disabled: no
+    - name: "Import 2019 Hustings"
+      cron:
+        name: "Import 2019 Hustings"
+        day: "5"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=1261632941&single=true&output=csv' > /tmp/hustings_2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_2019.csv --quiet --for-date 2019-05-02"
+        disabled: no
 
-  - name: "Import Ballot News articles"
-    cron:
-      name: "Import Ballot News articles"
-      minute: "5"
-      job: "{{ project_name }}_cron_cmd import_news_mentions"
-      disabled: no
+    - name: "Import europarl 2019 Hustings"
+      cron:
+        name: "Import europarl 2019 Hustings"
+        day: "5"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=105507981&single=true&output=csv' > /tmp/hustings_europarl_2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_europarl_2019.csv --quiet --for-date 2019-05-23"
+        disabled: no
 
-  - name: "Import europarl 2019 Hustings"
-    cron:
-      name: "Import europarl 2019 Hustings"
-      minute: "10,45"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=105507981&single=true&output=csv' > /tmp/hustings_europarl_2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_europarl_2019.csv --quiet --for-date 2019-05-23"
-      disabled: no
+    - name: "Import GE2019 Hustings"
+      cron:
+        name: "Import GE2019 Hustings"
+        day: "5"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=374893026&single=true&output=csv' > /tmp/hustings_GE2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_GE2019.csv --quiet --for-date 2019-12-12"
+        disabled: no
 
-  - name: "Import GE2019 Hustings"
-    cron:
-      name: "Import GE2019 Hustings"
-      minute: "10,45"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS69t7eXf9Cvwm9BSzhb1-uRj2CfdD1IGUcIQCRuls5DfdyvpcBr_hG5AiSFLFIZGidB0M0-DzKNNUZ/pub?gid=374893026&single=true&output=csv' > /tmp/hustings_GE2019.csv && {{ project_name }}_cron_cmd import_hustings /tmp/hustings_GE2019.csv --quiet --for-date 2019-12-12"
-      disabled: no
+    - name: "Import Manifestos"
+      cron:
+        name: "Import Manifestos"
+        day: "4"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/manifestos.csv && {{ project_name }}_cron_cmd import_manifestos /tmp/manifestos.csv"
+        disabled: no
 
-  - name: "Import Manifestos"
-    cron:
-      name: "Import Manifestos"
-      hour: "4"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/manifestos.csv && {{ project_name }}_cron_cmd import_manifestos /tmp/manifestos.csv"
-      disabled: no
+    - name: "Import 2019 Manifestos"
+      cron:
+        name: "Import 2019 Manifestos"
+        hour: "4"
+        day: "4"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTO-z37bBMxKwCuORIl2vE8v0kMFHlHETvBhGjuDidM1Wy4QxQawRou53kNLjEiJmpMhebRqoWZL9s-/pub?gid=0&single=true&output=csv' > /tmp/manifestos_2019.csv && {{ project_name }}_cron_cmd import_manifestos /tmp/manifestos_2019.csv"
+        disabled: no
 
-  - name: "Import Facebook Ads"
-    cron:
-      name: "Import Facebook Ads"
-      minute: "0"
-      job: "{{ project_name }}_cron_cmd import_facebook_ads"
-      disabled: yes
+    - name: "Import local party info 2018"
+      cron:
+        name: "Import Local Parties"
+        day: "5"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/local_parties_2018.csv && {{ project_name }}_cron_cmd import_local_parties --election-date 2018-05-03 /tmp/local_parties_2018.csv"
+        disabled: no
+    - name: "Import local party info 2019"
+      cron:
+        name: "Import Local Parties"
+        day: "5"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTO-z37bBMxKwCuORIl2vE8v0kMFHlHETvBhGjuDidM1Wy4QxQawRou53kNLjEiJmpMhebRqoWZL9s-/pub?gid=0&single=true&output=csv' > /tmp/local_parties_2019.csv && {{ project_name }}_cron_cmd import_local_parties --election-date 2019-05-02 /tmp/local_parties_2019.csv"
+        disabled: no
 
-  - name: "Import 2019 Manifestos"
-    cron:
-      name: "Import 2019 Manifestos"
-      hour: "4"
-      minute: "10"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTO-z37bBMxKwCuORIl2vE8v0kMFHlHETvBhGjuDidM1Wy4QxQawRou53kNLjEiJmpMhebRqoWZL9s-/pub?gid=0&single=true&output=csv' > /tmp/manifestos_2019.csv && {{ project_name }}_cron_cmd import_manifestos /tmp/manifestos_2019.csv"
-      disabled: no
+    - name: "Import Pledges"
+      cron:
+        name: "Import Pledges"
+        day: "3"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQvUX2DZEUwj43eVab7xp5tq3ocD28ol-QiQEWZOExMnI52Ih9pF1LwbZZGzKZE3wRQDtrRIwIM3dLA/pub?gid=0&single=true&output=csv' > /tmp/pledges.csv && {{ project_name }}_cron_cmd import_candidate_pledges /tmp/pledges.csv"
+        disabled: no
 
-  - name: "Import 2019 GE Manifestos"
-    cron:
-      name: "Import 2019 GE Manifestos"
-      minute: "25"
-      hour: "6"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTTU9C8xRmTNMoAXMDjKgLJA4X_DspJqbq1-ttRFp3oXjzclnVTYwTEuoc-l1QuVCe8voAIv6o-_DfU/pub?gid=0&single=true&output=csv' > /tmp/manifestos_GE2019.csv && {{ project_name }}_cron_cmd import_manifestos /tmp/manifestos_GE2019.csv"
-      disabled: no
+    - name: "Import CVs"
+      cron:
+        name: "Import CVs"
+        day: "2"
+        job: "{{ project_name }}_cron_cmd import_cvs"
+        disabled: no
 
-  - name: "Import local party info 2018"
-    cron:
-      name: "Import Local Parties"
-      minute: "5"
-      hour: "6"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS3pC0vtT9WaCyKDzqARQZY6aoYCyKZLyIvumKaX3TpqG0rt4y0fXp6dOPOZGMX6v0dFczHfizwidwZ/pub?gid=582783400&single=true&output=csv' > /tmp/local_parties_2018.csv && {{ project_name }}_cron_cmd import_local_parties --election-date 2018-05-03 /tmp/local_parties_2018.csv"
-      disabled: no
-  - name: "Import local party info 2019"
-    cron:
-      name: "Import Local Parties"
-      minute: "15"
-      hour: "6"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTO-z37bBMxKwCuORIl2vE8v0kMFHlHETvBhGjuDidM1Wy4QxQawRou53kNLjEiJmpMhebRqoWZL9s-/pub?gid=0&single=true&output=csv' > /tmp/local_parties_2019.csv && {{ project_name }}_cron_cmd import_local_parties --election-date 2019-05-02 /tmp/local_parties_2019.csv"
-      disabled: no
-  - name: "Import local party info 2020"
-    cron:
-      name: "Import Local Parties"
-      minute: "20"
-      hour: "6"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQx49JTec8i5oz_x6SJanvSKPc8BccanIlnGR4j0plbD99QFslXw7JEvWSNtdrJiePBMBi0AXkvw3e7/pub?gid=0&single=true&output=csv' > /tmp/local_parties_2020.csv && {{ project_name }}_cron_cmd import_local_parties --election-date 2020-05-07 /tmp/local_parties_2020.csv"
-      disabled: no
+    - name: "Import Leaflets"
+      cron:
+        name: "Import Leaflets"
+        hour: "4"
+        job: "{{ project_name }}_cron_cmd import_leaflets"
+        disabled: yes
 
-  - name: "Import Pledges"
-    cron:
-      name: "Import Pledges"
-      hour: "3"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQvUX2DZEUwj43eVab7xp5tq3ocD28ol-QiQEWZOExMnI52Ih9pF1LwbZZGzKZE3wRQDtrRIwIM3dLA/pub?gid=0&single=true&output=csv' > /tmp/pledges.csv && {{ project_name }}_cron_cmd import_candidate_pledges /tmp/pledges.csv"
-      disabled: no
+    - name: "Import Nesta Backgrounds"
+      cron:
+        name: "Import Nesta Backgrounds"
+        day: "2"
+        job: "curl --silent 'https://docs.google.com/spreadsheets/d/19_o6rm6sfrkO-C4PPZXSDl2bCWjdCJ8a7lbG4vz4JbM/pub?gid=1658209649&single=true&output=csv' > /tmp/nesta.csv && {{ project_name }}_cron_cmd import_nesta_backgrounds /tmp/nesta.csv"
+        disabled: no
 
-  - name: "Import CVs"
-    cron:
-      name: "Import CVs"
-      hour: "2"
-      job: "{{ project_name }}_cron_cmd import_cvs"
-      disabled: yes
+    - name: "Import Results Atom"
+      cron:
+        name: "Import Results Atom"
+        day: "1"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_results_atom -W -- {{ project_name }}_cron_cmd import_results_atom"
+        disabled: yes
 
-  - name: "Import Leaflets"
-    cron:
-      name: "Import Leaflets"
-      minute: "4"
-      job: "{{ project_name }}_cron_cmd import_leaflets"
-      disabled: yes
+    - name: "Import Votes Cast"
+      cron:
+        day: "*1"
+        name: "Import Votes Cast"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast --current"
+        disabled: no
 
-  - name: "Import Nesta Backgrounds"
-    cron:
-      name: "Import Nesta Backgrounds"
-      hour: "2"
-      job: "curl --silent 'https://docs.google.com/spreadsheets/d/19_o6rm6sfrkO-C4PPZXSDl2bCWjdCJ8a7lbG4vz4JbM/pub?gid=1658209649&single=true&output=csv' > /tmp/nesta.csv && {{ project_name }}_cron_cmd import_nesta_backgrounds /tmp/nesta.csv"
-      disabled: no
-
-  - name: "Import Results Atom"
-    cron:
-      name: "Import Results Atom"
-      minute: "*/15"
-      job: "/usr/local/bin/lockrun --lockfile=/tmp/import_results_atom -W -- {{ project_name }}_cron_cmd import_results_atom"
-      disabled: yes
-
-  - name: "Import Votes Cast"
-    cron:
-      minute: "*/15"
-      name: "Import Votes Cast"
-      job: "/usr/local/bin/lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast --since 2019-12-11"
-      disabled: no
-
-  - name: "Import Votes Cast"
-    cron:
-      minute: "14"
-      hour: "5"
-      name: "Import Votes Cast"
-      job: "/usr/local/bin/lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast"
-      disabled: no
+    - name: "Import Votes Cast"
+      cron:
+        day: "1"
+        hour: "5"
+        name: "Import Votes Cast"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast"
+        disabled: no
 
 
-# Reboot jobs
-  - name: Init data on restart
-    cron:
-      name: "Init data on reboot"
-      special_time: reboot
-      job: "sleep 30s && {{ project_root }}/load_database_from_s3.sh && {{ project_name }}_cron_cmd migrate --noinput && {{ project_name }}_cron_cmd init_data"
+    # Reboot jobs
+    - name: Init data on restart
+      cron:
+        name: "Init data on reboot"
+        special_time: reboot
+        job: "sleep 30s && {{ project_root }}/load_database_from_s3.sh && {{ project_name }}_cron_cmd migrate --noinput && {{ project_name }}_cron_cmd init_data"
 
 
 
-# Controller jobs
-  - name: Back up data to S3
-    cron:
-      name: "Back up data"
-      minute: 16
-      job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && output-on-error {{ project_root }}/backup_db_to_s3.sh"
+    # Controller jobs
+    - name: Back up data to S3
+      cron:
+        name: "Back up data"
+        minute: 16
+        job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && output-on-error {{ project_root }}/backup_db_to_s3.sh"
 
-  - name: Batch feedback to Slack
-    cron:
-      name: "Batch feedback to Slack"
-      minute: 0
-      hour: 9
-      job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours=24"
+    - name: Batch feedback to Slack
+      cron:
+        name: "Batch feedback to Slack"
+        minute: 0
+        hour: 9
+        day: 1
+        job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours=168"
 
-  - name: Init full data at 3.20
-    cron:
-      name: "Init data every hour"
-      minute: 20
-      hour: 3
-      job: "/usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd init_data --full"
-      disabled: no
+    - name: Init full data at 3.20
+      cron:
+        name: "Init data every hour"
+        minute: 20
+        hour: 3
+        job: "/usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd init_data --full"
+        disabled: no
