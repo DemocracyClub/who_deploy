@@ -195,6 +195,7 @@
         hour: 9
         day: 1
         job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours=168"
+        disabled: yes
 
     - name: Init full data at 3.20
       cron:
