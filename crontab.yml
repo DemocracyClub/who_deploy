@@ -147,7 +147,7 @@
         name: "Import Nesta Backgrounds"
         day: "2"
         job: "curl --silent 'https://docs.google.com/spreadsheets/d/19_o6rm6sfrkO-C4PPZXSDl2bCWjdCJ8a7lbG4vz4JbM/pub?gid=1658209649&single=true&output=csv' > /tmp/nesta.csv && {{ project_name }}_cron_cmd import_nesta_backgrounds /tmp/nesta.csv"
-        disabled: no
+        disabled: yes
 
     - name: "Import Results Atom"
       cron:
