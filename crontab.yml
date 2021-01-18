@@ -133,7 +133,7 @@
         name: "Import CVs"
         day: "2"
         job: "{{ project_name }}_cron_cmd import_cvs"
-        disabled: no
+        disabled: yes
 
     - name: "Import Leaflets"
       cron:
