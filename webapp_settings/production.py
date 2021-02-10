@@ -1,4 +1,8 @@
 from .base import *
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from ec2_tag_conditional.util import InstanceTags
+
 
 DEBUG = False
 
@@ -59,12 +63,22 @@ DIRTY_FILE_PATH = "~/server_dirty"
 EMAIL_SIGNUP_ENDPOINT = 'https://democracyclub.org.uk/mailing_list/api_signup/v1/'
 EMAIL_SIGNUP_API_KEY = '{{ vault_email_signup_api_key }}'
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
+def get_env():
+    tags = InstanceTags()
+    server_env = None
+    if tags['Env']:
+        server_env = tags['Env']
+
+    if server_env not in ['test', 'prod', 'packer-ami-build']:
+        # if we can't work out our environment, don't attempt to guess
+        # fail to bootstrap the application and complain loudly about it
+        raise Exception('Failed to infer a valid environment')
+    return server_env
 
 sentry_sdk.init(
     dsn="{{ vault_sentry_dsn }}",
-    integrations=[DjangoIntegration()]
+    integrations=[DjangoIntegration()],
+    environment=get_env()
 )
 
 # STRIPE_API_KEY = "sk_test_mlQaYWX7AcoD5s05d0AoTsDn"
