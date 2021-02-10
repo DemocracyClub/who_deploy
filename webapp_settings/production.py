@@ -48,13 +48,6 @@ SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 WDIV_API_KEY = "{{ vault_wdiv_api_key }}"
 SLACK_FEEDBACK_WEBHOOK_URL = "{{ vault_slack_feedback_webhook_url }}"  # noqa
 
-
-GOCARDLESS_APP_ID="{{ vault_gocardless_app_id }}"
-GOCARDLESS_APP_SECRET="{{ vault_gocardless_app_secret }}"
-GOCARDLESS_ACCESS_TOKEN="{{ vault_gocardless_access_token }}"
-GOCARDLESS_MERCHANT_ID="{{ vault_gocardless_merchant_id }}"
-GOCARDLESS_ACCESS_TOKEN = "{{ vault_gocardless_access_token }}"
-
 CHECK_HOST_DIRTY = True
 DIRTY_FILE_PATH = "~/server_dirty"
 # EE_BASE = "http://localhost:8000"
@@ -80,6 +73,3 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()],
     environment=get_env()
 )
-
-# STRIPE_API_KEY = "sk_test_mlQaYWX7AcoD5s05d0AoTsDn"
-STRIPE_API_KEY = "sk_live_j8gBH6npHjtWWgvUpH5dKYim"
