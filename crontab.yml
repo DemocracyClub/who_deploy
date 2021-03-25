@@ -91,6 +91,14 @@
         job: "/usr/local/bin/lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast"
         disabled: no
 
+    - name: "Import Referendums"
+      cron:
+        hour: "12"
+        name: "Import Referendums"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_referendums -W -- {{ project_name }}_cron_cmd import_referendums"
+        disabled: no
+
+
     - name: "Import Hustings 2021"
       cron:
         minute: "20"
