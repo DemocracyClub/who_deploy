@@ -107,6 +107,14 @@
         job: "{{ project_name }}_cron_cmd import_hustings --quiet"
         disabled: no
 
+    - name: "Import Parish Council Elections"
+      cron:
+        minute: "20"
+        hour: "*/2"
+        name: "Import Parish Council Elections"
+        job: "{{ project_name }}_cron_cmd import_parish_council_elections"
+        disabled: no
+
 
     # Reboot jobs
     - name: Init data on restart
