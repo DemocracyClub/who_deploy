@@ -85,15 +85,7 @@
 
     - name: "Import Votes Cast"
       cron:
-        minute: "45"
-        hour: "1-23/2"
-        name: "Import Votes Cast"
-        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast --current"
-        disabled: no
-
-    - name: "Import Votes Cast"
-      cron:
-        day: "1"
+        minute: "0"
         hour: "5"
         name: "Import Votes Cast"
         job: "/usr/local/bin/lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast"
