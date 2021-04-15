@@ -51,30 +51,6 @@
       app_path: "{{ project_root }}/code/"
       virtualenv: "{{ project_root }}/env/"
 
-
-# # TMP
-#   - name: Import ballots current
-#     django_manage:
-#       command: "import_ballots --current"
-#       app_path: "{{ project_root }}/code/"
-#       virtualenv: "{{ project_root }}/env/"
-# # TMP
-
-  # - name: Import EU party info
-  #   django_manage:
-  #     command: import_euro_parl_parties
-  #     app_path: "{{ project_root }}/code/"
-  #     virtualenv: "{{ project_root }}/env/"
-
-  - name: Install rsyslog configuration files
-    template:
-      src: files/conf/rsyslog.conf
-      dest: /etc/rsyslog.conf
-    become_user: root
-    notify:
-      - restart rsyslog
-
-
   handlers:
     - import_tasks: handlers.yml
 
