@@ -39,4 +39,3 @@
 - name: Create database.
   postgresql_db:
     name: "{{project_name}}"
-
