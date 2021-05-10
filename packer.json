@@ -18,6 +18,15 @@
       "source_ami": "{{user `ubuntu_ami_id` }}",
       "spot_price": "{{ user `max_spot_price`}}",
       "ssh_username": "ubuntu",
+      "launch_block_device_mappings": [
+          {
+              "device_name": "/dev/sda1",
+              "delete_on_termination": true,
+              "volume_size": "30",
+              "volume_type": "gp3",
+              "iops": "6000"
+          }
+      ],
       "tags": {
         "application": "{{user `app_name` }}",
         "build_date":"{{isotime}}"

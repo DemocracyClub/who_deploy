@@ -8,8 +8,9 @@
   become_user: "{{ project_name }}"
 
   tasks:
-  # - name: Sync elections
-  #   raw: /var/www/every_election/env/bin/python /var/www/every_election/code/manage.py sync_elections
+   - name: Sync elections
+     #raw: /var/www/every_election/env/bin/python /var/www/every_election/code/manage.py sync_elections
+     raw: /var/www/wcivf/env/bin/python /var/www/wcivf/code/manage.py import_parish_council_elections
 
-  - name: Clear redis cache
-    raw: redis-cli flushall
+     #- name: Clear redis cache
+     #raw: redis-cli flushall

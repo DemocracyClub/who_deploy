@@ -69,10 +69,9 @@
     - name: "Import Leaflets"
       cron:
         name: "Import Leaflets"
-        minute: "5"
-        hour: "5"
+        minute: "35"
         job: "{{ project_name }}_cron_cmd import_leaflets"
-        disabled: yes
+        disabled: no
 
     - name: "Import Results Atom"
       cron:
@@ -85,10 +84,9 @@
 
     - name: "Import Votes Cast"
       cron:
-        minute: "0"
-        hour: "5"
+        minute: "*/5"
         name: "Import Votes Cast"
-        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_votes_cast -W -- {{ project_name }}_cron_cmd import_votes_cast --since=2021-05-05"
         disabled: no
 
     - name: "Import Referendums"

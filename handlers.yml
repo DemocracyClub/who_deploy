@@ -18,7 +18,3 @@
   become: yes
   command: systemctl daemon-reload
 
-- name: restart rsyslog
-  service: name=rsyslog state=restarted
-  become: True
-  become_user: root
