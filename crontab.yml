@@ -129,8 +129,9 @@
         name: "Batch feedback to Slack"
         minute: 0
         hour: 10
-        day: 1
-        job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours-ago 24"
+        special-time: "weekly"
+        weekday: 5
+        job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours-ago 168"
         disabled: no
 
     - name: Init full data at 3.20
