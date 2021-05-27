@@ -135,7 +135,6 @@
         name: "Batch feedback to Slack"
         minute: 0
         hour: 10
-        special-time: "weekly"
         weekday: 5
         job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours-ago 168"
         disabled: no
