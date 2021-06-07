@@ -18,14 +18,6 @@
         name: "Process log queue"
         job: "{{ project_name }}_cron_cmd process_log_queue"
 
-    - name: "Import wikipedia"
-      cron:
-        name: "Import wikipedia"
-        minute: "30"
-        hour: "1"
-        job: "{{ project_name }}_cron_cmd import_wikipedia_bios"
-        disabled: no
-
     - name: "Import Ballot"
       cron:
         name: "Import Ballots"
@@ -50,38 +42,6 @@
         job: "{{ project_name }}_cron_cmd import_parties"
         disabled: no
 
-    - name: "Import Recent People"
-      cron:
-        name: "Import Recent People"
-        minute: "*/30"
-        hour: "0-2,4-23"
-        job: "/usr/local/bin/lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_people --recent"
-        disabled: no
-
-    - name: "Import local party info"
-      cron:
-        name: "Import Local Parties"
-        minute: "0"
-        hour: "*/2"
-        job: "{{ project_name }}_cron_cmd import_local_parties"
-        disabled: no
-
-    - name: "Import Leaflets"
-      cron:
-        name: "Import Leaflets"
-        minute: "35"
-        job: "{{ project_name }}_cron_cmd import_leaflets"
-        disabled: no
-
-    - name: "Import Results Atom"
-      cron:
-        name: "Import Results Atom"
-        minute: "10"
-        hour: "1"
-        day: "1"
-        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_results_atom -W -- {{ project_name }}_cron_cmd import_results_atom"
-        disabled: yes
-
     - name: "Import Votes Cast"
       cron:
         minute: "*/5"
@@ -96,24 +56,6 @@
         job: "/usr/local/bin/lockrun --lockfile=/tmp/import_referendums -W -- {{ project_name }}_cron_cmd import_referendums"
         disabled: no
 
-
-    - name: "Import Hustings 2021"
-      cron:
-        minute: "20"
-        hour: "1-23/2"
-        name: "Import Hustings"
-        job: "{{ project_name }}_cron_cmd import_hustings --quiet"
-        disabled: no
-
-    - name: "Import Parish Council Elections"
-      cron:
-        minute: "20"
-        hour: "*/2"
-        name: "Import Parish Council Elections"
-        job: "{{ project_name }}_cron_cmd import_parish_council_elections"
-        disabled: no
-
-
     # Reboot jobs
     - name: Init data on restart
       cron:
@@ -121,23 +63,12 @@
         special_time: reboot
         job: "sleep 30s && {{ project_root }}/load_database_from_s3.sh && {{ project_name }}_cron_cmd migrate --noinput && {{ project_name }}_cron_cmd init_data"
 
-
-
     # Controller jobs
     - name: Back up data to S3
       cron:
         name: "Back up data"
         minute: 16
         job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && output-on-error {{ project_root }}/backup_db_to_s3.sh"
-
-    - name: Batch feedback to Slack
-      cron:
-        name: "Batch feedback to Slack"
-        minute: 0
-        hour: 10
-        weekday: 5
-        job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours-ago 168"
-        disabled: no
 
     - name: Init full data at 3.20
       cron:
