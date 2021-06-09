@@ -8,14 +8,6 @@
   become_user: "{{ project_name }}"
   tasks:
 
-    - name: "Import Recent People"
-      cron:
-        name: "Import Recent People"
-        minute: "*/30"
-        hour: "0-2,4-23"
-        job: "/usr/local/bin/lockrun --lockfile=/tmp/ballots_and_people -W -- {{ project_name }}_cron_cmd import_people --recent"
-        disabled: no
-
     - name: "Import wikipedia"
       cron:
         name: "Import wikipedia"
@@ -31,13 +23,6 @@
         hour: "*/2"
         job: "{{ project_name }}_cron_cmd import_local_parties"
         disabled: no
-
-    - name: "Import Leaflets"
-      cron:
-        name: "Import Leaflets"
-        minute: "35"
-        job: "{{ project_name }}_cron_cmd import_leaflets"
-        disabled: yes
 
     - name: "Import Results Atom"
       cron:
@@ -64,11 +49,10 @@
         job: "{{ project_name }}_cron_cmd import_parish_council_elections"
         disabled: no
 
-    - name: Batch feedback to Slack
+    - name: "Import Referendums"
       cron:
-        name: "Batch feedback to Slack"
-        minute: 0
-        hour: 9
-        day: 1
-        job: "/usr/local/bin/instance-tags 'Env=prod' && /usr/local/bin/instance-tags 'controller=True' && {{ project_name }}_cron_cmd batch_feedback_to_slack --hours=168"
-        disabled: yes
+        minute: "15"
+        hour: "12"
+        name: "Import Referendums"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_referendums -W -- {{ project_name }}_cron_cmd import_referendums"
+        disabled: no
