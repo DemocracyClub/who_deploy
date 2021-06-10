@@ -1,0 +1,58 @@
+---
+- hosts: all
+  vars_files:
+    - vars.yml
+    # - @vault.yml
+  gather_facts: true
+  become: true
+  become_user: "{{ project_name }}"
+  tasks:
+
+    - name: "Import wikipedia"
+      cron:
+        name: "Import wikipedia"
+        minute: "30"
+        hour: "1"
+        job: "{{ project_name }}_cron_cmd import_wikipedia_bios"
+        disabled: no
+
+    - name: "Import local party info"
+      cron:
+        name: "Import Local Parties"
+        minute: "0"
+        hour: "*/2"
+        job: "{{ project_name }}_cron_cmd import_local_parties"
+        disabled: no
+
+    - name: "Import Results Atom"
+      cron:
+        name: "Import Results Atom"
+        minute: "10"
+        hour: "1"
+        day: "1"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_results_atom -W -- {{ project_name }}_cron_cmd import_results_atom"
+        disabled: yes
+
+    - name: "Import Hustings 2021"
+      cron:
+        minute: "20"
+        hour: "1-23/2"
+        name: "Import Hustings"
+        job: "{{ project_name }}_cron_cmd import_hustings --quiet"
+        disabled: no
+
+    - name: "Import Parish Council Elections"
+      cron:
+        minute: "20"
+        hour: "*/2"
+        name: "Import Parish Council Elections"
+        job: "{{ project_name }}_cron_cmd import_parish_council_elections"
+        disabled: no
+
+    - name: "Import Referendums"
+      cron:
+        minute: "15"
+        hour: "12"
+        name: "Import Referendums"
+        job: "/usr/local/bin/lockrun --lockfile=/tmp/import_referendums -W -- {{ project_name }}_cron_cmd import_referendums"
+        disabled: no
