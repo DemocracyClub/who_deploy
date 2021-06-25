@@ -1,0 +1,19 @@
+- Updated the packer.json - check commits
+- Had to upgrade packer to >=1.7.1 to work with SSO
+- IAM error? 
+    - Build 'server' errored after 4 seconds 405 milliseconds: Couldn't find specified instance profile: NoSuchEntity: Instance Profile wcivf-packer-ami-builder cannot be found.status code: 404, request id: 4d9adaee-ff58-41b8-ab93-780f657919f9
+- Created IAM role to match that in legacy:
+    - aws iam create-role --role-name wcivf-packer-ami-builder --assume-role-policy-document file://packer_iam_trust_policy.json
+    - 1066  aws iam attach-role-policy arn:aws:iam::aws:policy/AmazonS3FullAccess --role-name wcivf-packer-ami-builder
+    - 1067  aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess --role-name wcivf-packer-ami-builder
+- Reran packer - same error
+- Created instance profile and attached instance role
+    - aws iam create-instance-profile --instance-profile-name wcivf-packer-ami-builder
+    - aws iam add-role-to-instance-profile --instance-profile-name wcivf-packer-ami-builder --role-name wcivf-packer-ami-builder
+- New error related to missing fleet tags:
+    - ==> server: InvalidTagKey.Malformed: Tag specification must have at least one tag
+    - ==> server: 	status code: 400, request id: 13b1f921-0b8b-4407-a8ac-7e903aad230a
+- Add fleet_tags to packer.json
+- SSH timeout error
+    - Caused by packer using private IP address to ssh
+    - Added "ssh_interface" : "public_ip" to packer.json to resolve
