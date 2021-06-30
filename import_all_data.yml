@@ -10,19 +10,19 @@
     service: name=cron state=stopped
     become_user: root
 
-  - name: Install Who database restore script
-    template:
-      src: "files/scripts/load_database_from_s3.sh"
-      dest: "{{ project_root }}/load_database_from_s3.sh"
-      mode: "u+rwx"
-      owner: "{{ project_name }}"
+  # - name: Install Who database restore script
+  #   template:
+  #     src: "files/scripts/load_database_from_s3.sh"
+  #     dest: "{{ project_root }}/load_database_from_s3.sh"
+  #     mode: "u+rwx"
+  #     owner: "{{ project_name }}"
 
-  - name: Restore from Who backup
-    shell: |
-       "{{ project_root }}/load_database_from_s3.sh"
-    args:
-      chdir: "{{ project_root }}"
-      executable: /bin/bash
+  # - name: Restore from Who backup
+  #   shell: |
+  #      "{{ project_root }}/load_database_from_s3.sh"
+  #   args:
+  #     chdir: "{{ project_root }}"
+  #     executable: /bin/bash
 
   - name: Migrate Django database.
     shell: "{{ project_root }}/env/bin/python {{ project_root }}/code/manage.py migrate --noinput"

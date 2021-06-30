@@ -61,19 +61,19 @@
     name: "{{ ee_name }}"
 
 
-- name: Install EE database restore script
-  template:
-    src: "load_database_from_s3.sh"
-    dest: "{{ ee_project_root }}/load_database_from_s3.sh"
-    mode: "u+rwx"
-    owner: "{{ ee_name }}"
+# - name: Install EE database restore script
+#   template:
+#     src: "load_database_from_s3.sh"
+#     dest: "{{ ee_project_root }}/load_database_from_s3.sh"
+#     mode: "u+rwx"
+#     owner: "{{ ee_name }}"
 
-- name: Restore from EE backup
-  shell: |
-     "{{ ee_project_root }}/load_database_from_s3.sh"
-  args:
-    chdir: "{{ ee_project_root }}"
-    executable: /bin/bash
+# - name: Restore from EE backup
+#   shell: |
+#      "{{ ee_project_root }}/load_database_from_s3.sh"
+#   args:
+#     chdir: "{{ ee_project_root }}"
+#     executable: /bin/bash
 
 - name: Install systemd init scripts.
   template:
