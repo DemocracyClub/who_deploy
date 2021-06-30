@@ -22,7 +22,6 @@
         '{{ec2_metadata.instances}}'
       when: not packer is defined
 
-
     - name: Remove controller tag
       ec2_tag:
         resource: '{{ item.instance_id }}'
@@ -41,7 +40,9 @@
         state: present
         tags:
           controller: 'True'
-      when: not packer is defined
+      when:
+        - not packer is defined
+        - (ec2_metadata.instances| default([])) | length > 1
 
     - name: Get controller list
       ec2_instance_facts:
@@ -52,10 +53,13 @@
          "tag:controller": "True"
          instance-state-name: running
       register: ec2_metadata
-      when: not packer is defined
-
+      when:
+        - not packer is defined
+        - (ec2_metadata.instances| default([])) | length > 1
 
     - assert:
         that: ec2_metadata.instances | count == 1
         msg: "More than one controller found. You'll need to clean this up in the EC2 console manually"
-      when: not packer is defined
+      when:
+        - not packer is defined
+        - (ec2_metadata.instances| default([])) | length > 1
