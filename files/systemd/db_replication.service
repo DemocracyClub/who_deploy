@@ -1,0 +1,13 @@
+[Unit]
+Description=Manages DB replication subscription
+After=postgresql.service
+
+[Service]
+User={{ project_name }}
+Type=oneshot
+RemainAfterExit=true
+ExecStart={{ project_root }}/setup_db_replication.sh
+ExecStop={{ project_root }}/remove_db_replication.sh
+
+[Install]
+WantedBy=multi-user.target

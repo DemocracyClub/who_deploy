@@ -55,7 +55,7 @@
     - import_tasks: handlers.yml
 
 - import_playbook: clear_redis_cache.yml
-- import_playbook: crontab_base.yml
+# - import_playbook: crontab_base.yml
 # should be disabled outside of election cycle
 # - import_playbook: crontab_busy.yml
 - import_playbook: tag_instances.yml

@@ -50,3 +50,10 @@ python_packages:
   - ec2_tag_conditional
 initfiles:
   - gunicorn
+servicefiles:
+  - gunicorn
+  - db_replication
+bash_scripts:
+  - backup_to_s3
+  - setup_db_replication
+  - remove_db_replication
