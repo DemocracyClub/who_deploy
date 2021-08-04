@@ -4,7 +4,7 @@ project_root: /var/www/wcivf
 app_name: wcivf
 project_repo: https://github.com/DemocracyClub/WhoCanIVoteFor.git
 branch: master
-domain: whocanivotefor.co.uk
+domain: dev.wcivf.club
 nickname: production
 cron_email: developers+wcivf_%s@democracyclub.org.uk
 postgresql_version: 10
