@@ -41,6 +41,8 @@ system_packages:
   - python-setuptools
   - python-virtualenv
   - redis-server
+  - ruby-full
+  - wget
   - yui-compressor
   - unzip
   - unattended-upgrades

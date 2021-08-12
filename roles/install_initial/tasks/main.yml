@@ -46,3 +46,6 @@
     npm:
       name: yuglify
       global: yes
+
+  - name: Install CodeDeploy agent
+    raw: cd /home/ubuntu && sudo wget https://aws-codedeploy-eu-west-2.s3.eu-west-2.amazonaws.com/latest/install && sudo chmod +x ./install && sudo ./install auto
