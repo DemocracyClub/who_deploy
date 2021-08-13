@@ -9,7 +9,7 @@
         vpc_id: vpc-fa2e0792
     vpc_id: "{{ regions[region].vpc_id }}"
     ami_id: "{{ regions[region].ami_id }}"
-    lc_num: 133
+    lc_num: 134
 
     elb_ssl_arn: "arn:aws:acm:eu-west-2:061126312678:certificate/3ac6d121-aed6-48a7-af80-6a021e05167c"
     old_lc_num: "{{ lc_num - 1 }}"
@@ -101,7 +101,7 @@
         assign_public_ip: yes
         image_id: "{{ ami_id }}"
         instance_type: t3.large
-        security_groups: ["{{ sg_instance.group_id }}"]
+        security_groups: ["{{ sg_instance.group_id }}", "sg-04c54174132078fa4"]
         user_data: "{{lookup('file', 'userdata.yml') }}"
         instance_profile_name: wcivf-packer-ami-builder
         volumes:
