@@ -9,7 +9,7 @@
         vpc_id: vpc-fa2e0792
     vpc_id: "{{ regions[region].vpc_id }}"
     ami_id: "{{ regions[region].ami_id }}"
-    lc_num: 136
+    lc_num: 137
 
     elb_ssl_arn: "arn:aws:acm:eu-west-2:061126312678:certificate/3ac6d121-aed6-48a7-af80-6a021e05167c"
     old_lc_num: "{{ lc_num - 1 }}"
