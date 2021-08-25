@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -xeE
 
 DB={{ project_name }}
 USER={{ project_name }}
