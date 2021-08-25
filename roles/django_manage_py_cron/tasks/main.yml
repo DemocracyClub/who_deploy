@@ -1,7 +1,0 @@
----
-
-- name: Install project specific cron runner
-  template:
-    src: "manage_py_command.sh"
-    dest: "/usr/bin/{{ project_name }}_cron_cmd"
-    mode: "+x"

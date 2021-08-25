@@ -32,7 +32,6 @@
     - install_initial
     - postgresql
     - every_election
-    - django_manage_py_cron
     - lockrun
   handlers:
     - import_tasks: handlers.yml
@@ -47,7 +46,6 @@
 
   - name: Start auto update again
     raw: systemctl start apt-daily.timer
-
 
   - name: Create the project directory.
     file: state=directory path={{ project_root }}
@@ -114,12 +112,6 @@
   - name: "enable db replication service"
     shell: "systemctl enable {{ project_name }}_db_replication.service"
 
-  # - name: Add gunicorn to systemd
-  #   systemd:
-  #     name: "{{ project_name }}_gunicorn.socket"
-  #     state: started
-  #     enabled: yes
-
   - name: Install bash scripts
     template:
       src: "files/scripts/{{ item }}.sh"
@@ -127,8 +119,6 @@
       mode: "u+rwx"
       owner: "{{ project_name }}"
     with_items: "{{ bash_scripts }}"
-
-
 
   - name: Set up handy bashrc file
     lineinfile:

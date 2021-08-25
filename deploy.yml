@@ -3,7 +3,6 @@
    - all
   vars_files:
     - vars.yml
-    - vault.yml
   become: true
   become_user: "{{ project_name }}"
 
@@ -18,13 +17,6 @@
       - restart web frontend
     register: application_git_repo
 
-  - name: Upload configuration.
-    template:
-      src: "webapp_settings/{{ nickname }}.py"
-      dest: "{{ project_root }}/code/wcivf/settings/local.py"
-    notify: restart web frontend
-    register: application_config
-
   - name: Upgrade the virtualenv.
     pip:
       requirements: "{{ project_root }}/code/requirements.txt"
@@ -32,30 +24,9 @@
       # virtualenv_python: "python3"
     when: (application_git_repo.changed) or (application_config.changed)
 
-  - name: Migrate Django database.
-    shell: "{{ project_root }}/env/bin/python {{ project_root }}/code/manage.py migrate --noinput"
-    when: (application_git_repo.changed) or (application_config.changed)
-
   - name: Generate Django media.
     shell: "PATH={{ project_root }}/env/bin/:$PATH {{ project_root }}/env/bin/python {{ project_root }}/code/manage.py collectstatic --noinput --clear"
     when: (application_git_repo.changed) or (application_config.changed)
 
-  - django_manage:
-      command: setup_django_site
-      app_path: "{{ project_root }}/code/"
-      virtualenv: "{{ project_root }}/env/"
-
-  - name: Ensure party emblems exist
-    django_manage:
-      command: import_parties
-      app_path: "{{ project_root }}/code/"
-      virtualenv: "{{ project_root }}/env/"
-
   handlers:
     - import_tasks: handlers.yml
-
-- import_playbook: clear_redis_cache.yml
-# - import_playbook: crontab_base.yml
-# should be disabled outside of election cycle
-# - import_playbook: crontab_busy.yml
-- import_playbook: tag_instances.yml
