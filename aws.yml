@@ -4,12 +4,12 @@
     region: "{{ lookup('env', 'AWS_REGION') or 'eu-west-2' }}"
     regions:
       eu-west-2:
-        ami_id: ami-02d37bf30f2944395 # The Who image ID from packer
+        ami_id: ami-0db28a30d4883e6ec # The Who image ID from packer
         # The default VPC
         vpc_id: vpc-fa2e0792
     vpc_id: "{{ regions[region].vpc_id }}"
     ami_id: "{{ regions[region].ami_id }}"
-    lc_num: 138
+    lc_num: 141
 
     elb_ssl_arn: "arn:aws:acm:eu-west-2:061126312678:certificate/3ac6d121-aed6-48a7-af80-6a021e05167c"
     old_lc_num: "{{ lc_num - 1 }}"
@@ -141,5 +141,3 @@
       ec2_lc:
         name: "wcivf_{{ aws_env }}-{{ old_lc_num }}"
         state: absent
-
-- import_playbook: tag_instances.yml
