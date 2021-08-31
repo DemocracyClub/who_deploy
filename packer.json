@@ -50,7 +50,11 @@
       "fleet_tags": {
         "application": "{{user `app_name` }}",
         "build_date":"{{isotime}}"
-      }
+      },
+      "ami_users": [
+        "061126312678",
+        "897471774344"
+      ]
     }
   ],
   "provisioners": [
