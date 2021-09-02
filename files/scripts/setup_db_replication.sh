@@ -1,8 +1,10 @@
 #!/bin/bash
-set -xeE
+set -xeEo pipefail
 
-# load .env file to get RDS secrets
-export $(cat ./code/.env | xargs)
+# ensure the file exists - if not script exits with error
+cat /var/www/wcivf/code/.env | xargs
+# now load .env file to get RDS secrets
+export $(cat /var/www/wcivf/code/.env | xargs)
 USER={{ project_name }}
 DB={{ project_name }}
 INSTANCE_ID=`curl http://instance-data/latest/meta-data/instance-id`

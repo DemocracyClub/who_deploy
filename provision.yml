@@ -109,9 +109,6 @@
   - name: "start gunicorn"
     shell: "systemctl start {{ project_name }}_gunicorn.socket"
 
-  - name: "enable db replication service"
-    shell: "systemctl enable {{ project_name }}_db_replication.service"
-
   - name: Install bash scripts
     template:
       src: "files/scripts/{{ item }}.sh"
