@@ -1,6 +1,8 @@
 #!/bin/bash
 set -xeEo pipefail
 
+# write the env file
+/var/www/wcivf/env/bin/python /var/www/wcivf/code/deployscripts/write_envfile.py
 # ensure the file exists - if not script exits with error
 cat /var/www/wcivf/code/.env | xargs
 # now load .env file to get RDS secrets

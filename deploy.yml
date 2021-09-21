@@ -24,13 +24,6 @@
       # virtualenv_python: "python3"
     when: (application_git_repo.changed) or (application_config.changed)
 
-  - name: Write .env file
-    shell: "{{ project_root }}/code/deployscripts/write_envfile.sh"
-
-  - name: "enable db replication service"
-    shell: "systemctl enable {{ project_name }}_db_replication.service"
-    become_user: root
-
   - name: Generate Django media.
     shell: "PATH={{ project_root }}/env/bin/:$PATH {{ project_root }}/env/bin/python {{ project_root }}/code/manage.py collectstatic --noinput --clear"
     when: (application_git_repo.changed) or (application_config.changed)
