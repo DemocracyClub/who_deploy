@@ -2,7 +2,7 @@
   "description": "Builds WCIVF golden image",
   "variables": {
     "build_region": "eu-west-2",
-    "branch": "feature/aws-lambda",
+    "branch": "master",
     "max_spot_price": "0.1",
     "app_name": "wcivf"
   },
