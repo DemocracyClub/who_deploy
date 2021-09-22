@@ -1,5 +1,6 @@
 [Unit]
 Description=Manages DB replication subscription
+Before={{ project_name }}_gunicorn.service
 After=postgresql.service
 
 [Service]
