@@ -54,6 +54,7 @@ initfiles:
 servicefiles:
   - gunicorn
   - db_replication
+  - cloudwatch
 bash_scripts:
   - backup_to_s3
   - setup_db_replication

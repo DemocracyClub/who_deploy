@@ -85,6 +85,11 @@
       - reload systemd
       - restart web frontend
 
+  - name: Create the db_replication service log directory
+    file:
+      path: /var/log/db_replication/
+      state: directory
+
   - name: Install systemd socket scripts.
     template:
       src: "files/systemd/{{ item }}.socket"
