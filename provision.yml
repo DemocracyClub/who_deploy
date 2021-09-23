@@ -117,6 +117,9 @@
   - name: "enable cloudwatch"
     shell: "systemctl enable {{ project_name }}_cloudwatch.service"
 
+  - name: "enable db replication"
+    shell: "systemctl enable {{ project_name }}_db_replication.service"
+
   - name: Install bash scripts
     template:
       src: "files/scripts/{{ item }}.sh"
