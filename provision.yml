@@ -89,6 +89,13 @@
     file:
       path: /var/log/db_replication/
       state: directory
+      mode: 0777
+
+  - name: Create the db_replication service log file
+    file:
+      path: /var/log/db_replication/logs.log
+      state: touch
+      mode: 0777
 
   - name: Install systemd socket scripts.
     template:

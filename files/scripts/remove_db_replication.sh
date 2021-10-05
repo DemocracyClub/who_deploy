@@ -1,5 +1,8 @@
 #!/bin/bash
-set -ex
+set -xeEo pipefail
+
+# rotate the log file otherwise output is lost in cloudwatch
+echo "" > /var/log/db_replication/logs.log
 
 USER={{ project_name }}
 INSTANCE_ID=`curl http://instance-data/latest/meta-data/instance-id`

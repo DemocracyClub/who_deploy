@@ -1,6 +1,8 @@
 #!/bin/bash
 set -xeEo pipefail
 
+# rotate the log file otherwise output is lost in cloudwatch
+echo "" > /var/log/db_replication/logs.log
 # write the env file
 /var/www/wcivf/env/bin/python /var/www/wcivf/code/deployscripts/write_envfile.py
 # ensure the file exists - if not script exits with error
