@@ -12,11 +12,17 @@
                                                 "log_group_name": "/db_replication/",
                                                 "log_stream_name": "logs",
                                                 "timezone": "UTC"
+                                        },
+                                        {
+                                                "file_path": "/var/log/syslog",
+                                                "log_group_name": "/var/log/",
+                                                "log_stream_name": "syslog",
+                                                "timezone": "UTC"
                                         }
                                 ]
                         }
                 },
                 "log_stream_name": "logs",
-                "force_flush_interval" : 60
+                "force_flush_interval" : 5
         }
 }
