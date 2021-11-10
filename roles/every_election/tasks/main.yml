@@ -110,7 +110,7 @@
     name: "Sync local EE data from source"
     minute: 0
     hour: 4
-    job: "output-on-error /var/www/{{ ee_name }}/env/bin/python /var/www/{{ ee_name }}/code/manage.py sync_elections"
+    job: "nice -n 19 ionice -c 3 output-on-error  /var/www/{{ ee_name }}/env/bin/python /var/www/{{ ee_name }}/code/manage.py sync_elections"
     user: "{{ ee_name }}"
     disabled: no
   become_user: root
