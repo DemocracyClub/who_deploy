@@ -24,5 +24,17 @@
                 },
                 "log_stream_name": "logs",
                 "force_flush_interval" : 5
+        },
+        "metrics":{
+                "metrics_collected": {
+                        "mem": {
+                                "measurement":[
+                                        "mem_available_percent",
+                                        "mem_free",
+                                        "mem_used_percent"
+                                ],
+                                "metrics_collection_interval":60
+                        }
+                }
         }
 }
