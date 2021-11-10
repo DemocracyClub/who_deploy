@@ -18,6 +18,12 @@
                                                 "log_group_name": "/var/log/",
                                                 "log_stream_name": "syslog",
                                                 "timezone": "UTC"
+                                        },
+                                        {
+                                                "file_path": "/opt/codedeploy-agent/deployment-root/deployment-logs/codedeploy-agent-deployments.log",
+                                                "log_group_name": "/codedeploy/",
+                                                "log_stream_name": "codedeploy-agent-deployments.log",
+                                                "timezone": "UTC"
                                         }
                                 ]
                         }
