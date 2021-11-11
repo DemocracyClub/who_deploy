@@ -24,5 +24,10 @@
       # virtualenv_python: "python3"
     when: (application_git_repo.changed) or (application_config.changed)
 
+  - name: Process log queue
+    cron:
+      name: "Process log queue"
+      job: "/usr/bin/output-on-error /var/www/{{ project_name }}/env/bin/python /var/www/{{ project_name }}/code/manage.py process_log_queue"
+
   handlers:
     - import_tasks: handlers.yml
