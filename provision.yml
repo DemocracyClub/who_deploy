@@ -115,17 +115,8 @@
       - reload systemd
       - restart web frontend
 
-  - name: "enable gunicorn"
-    shell: "systemctl enable {{ project_name }}_gunicorn.socket"
-
-  - name: "start gunicorn"
-    shell: "systemctl start {{ project_name }}_gunicorn.socket"
-
   - name: "enable cloudwatch"
     shell: "systemctl enable {{ project_name }}_cloudwatch.service"
-
-  - name: "enable db replication"
-    shell: "systemctl enable {{ project_name }}_db_replication.service"
 
   - name: Install bash scripts
     template:
