@@ -18,7 +18,7 @@ PrivateTmp=true
 ExecStart={{project_root}}/env/bin/gunicorn \
   --pid /run/{{ project_name }}_gunicorn/pid \
   --bind unix:/run/{{ project_name }}_gunicorn/socket \
-  --workers={{ ansible_processor_cores+1 }} \
+  --workers={{ ansible_processor_cores*2+1 }} \
    {{ project_name }}.wsgi
 
 [Install]
