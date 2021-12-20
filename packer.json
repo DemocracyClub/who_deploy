@@ -10,7 +10,7 @@
     {
       "name": "server",
       "type": "amazon-ebs",
-      "ami_name": "wcivf {{isotime |clean_ami_name }}",
+      "ami_name": "wcivf {{isotime |clean_resource_name }}",
       "associate_public_ip_address": true,
       "iam_instance_profile": "wcivf-packer-ami-builder",
       "instance_type":"m4.xlarge",
@@ -18,13 +18,16 @@
       "source_ami": "{{user `ubuntu_ami_id` }}",
       "spot_price": "{{ user `max_spot_price`}}",
       "ssh_username": "ubuntu",
+      "ssh_timeout": "10m",
+      "ssh_interface": "public_ip",
       "launch_block_device_mappings": [
           {
               "device_name": "/dev/sda1",
               "delete_on_termination": true,
               "volume_size": "30",
               "volume_type": "gp3",
-              "iops": "6000"
+              "iops": "6000",
+              "throughput": "125"
           }
       ],
       "tags": {
@@ -43,7 +46,16 @@
       "snapshot_tags": {
         "application": "{{user `app_name` }}",
         "build_date":"{{isotime}}"
-      }
+      },
+      "fleet_tags": {
+        "application": "{{user `app_name` }}",
+        "build_date":"{{isotime}}"
+      },
+      "ami_users": [
+        "061126312678",
+        "897471774344",
+        "705594574410"
+      ]
     }
   ],
   "provisioners": [
@@ -57,11 +69,6 @@
         "--extra-vars", "ansible_python_interpreter=python3"
       ]
 
-    },
-    {
-      "type": "ansible",
-      "playbook_file": "./import_all_data.yml",
-      "groups":["production", "servers", "remote"]
     },
     {
       "type": "shell",

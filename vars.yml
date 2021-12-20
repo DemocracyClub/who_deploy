@@ -4,8 +4,6 @@ project_root: /var/www/wcivf
 app_name: wcivf
 project_repo: https://github.com/DemocracyClub/WhoCanIVoteFor.git
 branch: master
-domain: whocanivotefor.co.uk
-nickname: production
 cron_email: developers+wcivf_%s@democracyclub.org.uk
 postgresql_version: 10
 system_packages:
@@ -41,6 +39,8 @@ system_packages:
   - python-setuptools
   - python-virtualenv
   - redis-server
+  - ruby-full
+  - wget
   - yui-compressor
   - unzip
   - unattended-upgrades
@@ -50,3 +50,11 @@ python_packages:
   - ec2_tag_conditional
 initfiles:
   - gunicorn
+servicefiles:
+  - gunicorn
+  - db_replication
+  - cloudwatch
+bash_scripts:
+  - backup_to_s3
+  - setup_db_replication
+  - remove_db_replication

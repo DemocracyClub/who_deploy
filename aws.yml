@@ -4,16 +4,14 @@
     region: "{{ lookup('env', 'AWS_REGION') or 'eu-west-2' }}"
     regions:
       eu-west-2:
-        ami_id: ami-0ccf271e0f272379f # The Who image ID from packer
+        ami_id: ami-0db28a30d4883e6ec # The Who image ID from packer
         # The default VPC
-        vpc_id: vpc-110bfc78
+        vpc_id: vpc-fa2e0792
     vpc_id: "{{ regions[region].vpc_id }}"
     ami_id: "{{ regions[region].ami_id }}"
-    lc_num: 127
+    lc_num: 141
 
-    # elb_ssl_arn: "arn:aws:iam::225244788755:server-certificate/ps-prod-5"
-    # elb_ssl_arn: "arn:aws:acm:eu-west-2:929325949831:certificate/0914a080-ce61-4dd3-80cd-4f35348634c3"
-    elb_ssl_arn: "arn:aws:acm:eu-west-2:929325949831:certificate/3ea383f7-2299-4425-9ae7-8ee8b388213e"
+    elb_ssl_arn: "arn:aws:acm:eu-west-2:061126312678:certificate/3ac6d121-aed6-48a7-af80-6a021e05167c"
     old_lc_num: "{{ lc_num - 1 }}"
     aws_env: "{{ lookup('env', 'ENVIRONMENT') or 'test' }}"
   environment:
@@ -103,7 +101,7 @@
         assign_public_ip: yes
         image_id: "{{ ami_id }}"
         instance_type: t3.large
-        security_groups: ["{{ sg_instance.group_id }}", "sg-807bc0e9"]
+        security_groups: ["{{ sg_instance.group_id }}", "sg-04c54174132078fa4"]
         user_data: "{{lookup('file', 'userdata.yml') }}"
         instance_profile_name: wcivf-packer-ami-builder
         volumes:
@@ -123,12 +121,13 @@
         tags:
           - Env: "{{ aws_env }}"
             Name: wcivf_asg
-        desired_capacity: 10
+            CodeDeploy: wcivf
+        desired_capacity: 1
         health_check_type: ELB
         launch_config_name: "{{launchconfig.name}}"
         load_balancers: ["{{ elb_result.elb.name }}"]
-        max_size: 15
-        min_size: 9
+        max_size: 1
+        min_size: 1
         replace_all_instances: "{{ replace_all|default(False) }}"
         termination_policies: [ OldestLaunchConfiguration, ClosestToNextInstanceHour ]
         # Yes, subnets go in vpc_zone_identifier. Blame Garethr.
@@ -142,5 +141,3 @@
       ec2_lc:
         name: "wcivf_{{ aws_env }}-{{ old_lc_num }}"
         state: absent
-
-- import_playbook: tag_instances.yml
