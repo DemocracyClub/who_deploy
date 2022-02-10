@@ -16,14 +16,9 @@
       name: "{{ python_packages }}"
       executable: pip3
 
-  # Install s3 with pip as a python 2 dependency because
-  # apt installs it with python 3 and we hit this bug:
-  # https://github.com/s3tools/s3cmd/issues/930
-  # because we want to authenticate using iam role instead of key
   - name: Install s3cmd
     pip:
       name: s3cmd
-      executable: pip2
     become: true
     become_user: root
 

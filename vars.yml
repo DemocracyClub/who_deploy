@@ -5,7 +5,7 @@ app_name: wcivf
 project_repo: https://github.com/DemocracyClub/WhoCanIVoteFor.git
 branch: master
 cron_email: developers+wcivf_%s@democracyclub.org.uk
-postgresql_version: 10
+postgresql_version: 12
 system_packages:
   - aptitude
   - build-essential
@@ -31,13 +31,11 @@ system_packages:
   - nodejs
   - postfix
   - postgis
-  - python-dev
   - python3-dev
-  - python-pip
   - python3-pip
   - python3-psycopg2
-  - python-setuptools
-  - python-virtualenv
+  - python3-setuptools
+  - python3-virtualenv
   - redis-server
   - ruby-full
   - wget

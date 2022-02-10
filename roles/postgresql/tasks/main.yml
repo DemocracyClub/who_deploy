@@ -9,11 +9,6 @@
     update-cache: yes
     cache_valid_time: 43200
 
-- name: Install python2 psycopg2
-  pip:
-    name: "psycopg2"
-    executable: "pip2"
-
 - name: Install postgres_hba configuration file.
   template: src=files/conf/pg_hba.conf dest=/etc/postgresql/{{postgresql_version}}/main/pg_hba.conf
 
