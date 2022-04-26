@@ -19,6 +19,7 @@ ExecStart={{project_root}}/env/bin/gunicorn \
   --pid /run/{{ project_name }}_gunicorn/pid \
   --bind unix:/run/{{ project_name }}_gunicorn/socket \
   --workers={{ ansible_processor_cores*2+1 }} \
+  --worker-class=gevent \
    {{ project_name }}.wsgi
 
 [Install]
