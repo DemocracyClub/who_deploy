@@ -17,5 +17,7 @@ SUBSCRIPTION=${USER}_${INSTANCE_ID:2}
 dropdb --if-exists $DB -U $USER
 createdb $DB -U $USER
 source {{ project_root }}/env/bin/activate && {{ project_root }}/code/manage.py migrate
+source {{ project_root }}/env/bin/activate && {{ project_root }}/code/manage.py flush --no-input
+source {{ project_root }}/env/bin/activate && {{ project_root }}/code/manage.py truncate_replicated_tables
 psql $DB -U $USER -c "CREATE SUBSCRIPTION $SUBSCRIPTION CONNECTION 'dbname=$RDS_DB_NAME host=$RDS_HOST user=$USER password=$RDS_DB_PASSWORD' PUBLICATION alltables;"
 rm -f /var/www/wcivf/home/server_dirty

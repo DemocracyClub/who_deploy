@@ -3,7 +3,7 @@ project_name: wcivf
 project_root: /var/www/wcivf
 app_name: wcivf
 project_repo: https://github.com/DemocracyClub/WhoCanIVoteFor.git
-branch: master
+branch: bugfix/sites-table-replication
 cron_email: developers+wcivf_%s@democracyclub.org.uk
 postgresql_version: 12
 system_packages:

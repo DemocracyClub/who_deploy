@@ -24,6 +24,12 @@
                                                 "log_group_name": "/codedeploy/",
                                                 "log_stream_name": "codedeploy-agent-deployments.log",
                                                 "timezone": "UTC"
+                                        },
+                                        {
+                                                "file_path": "/var/log/postgresql/postgresql-12-main.log",
+                                                "log_group_name": "/var/log/postgresql/",
+                                                "log_stream_name": "postgresql-12-main.log",
+                                                "timezone": "UTC"
                                         }
                                 ]
                         }
